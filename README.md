@@ -6,48 +6,21 @@
 
 ## 1. Project Purpose & Relationship to Samsung Theme 2
 
-This repository implements the end-to-end working prototype for **Samsung PRISM Gen AI Hackathon 3.0 (Theme 2: Guided Troubleshooting)**. Given a user's device complaint and raw Samsung internal knowledge store (SIIS) articles, the system produces grounded, step-by-step diagnostic workflows enriched with official Samsung device settings deeplinks (`bixby://masked/act/...`) and validation checks.
+This repository implements the working prototype for **Samsung PRISM Gen AI Hackathon 3.0 (Theme 2: Guided Troubleshooting)**. Given a user's device complaint and raw Samsung internal knowledge store (SIIS) articles, the system produces grounded diagnostic workflows enriched with official Samsung device settings deeplinks (`bixby://masked/act/...`) and validation checks.
 
 ---
 
-## 2. Target Architecture Diagram
+## 2. Target Architecture
 
 ```text
-                               +-----------------------------+
-                               |        USER BROWSER         |
-                               +--------------+--------------+
-                                              |
-                                         HTTP / JSON
-                                              v
-                               +-----------------------------+
-                               |     REACT FRONTEND (Vite)   |
-                               | TypeScript + Tailwind CSS   |
-                               +--------------+--------------+
-                                              |
-                                  POST /api/troubleshoot
-                                              v
-                               +-----------------------------+
-                               |    NODE.JS BACKEND (Fastify)|
-                               | TypeScript API Orchestration|
-                               +--------------+--------------+
-                                              |
-                               POST /internal/troubleshoot
-                                              v
-                               +-----------------------------+
-                               |   PYTHON AI/ML GATEWAY      |
-                               |   FastAPI + Pydantic        |
-                               +-------+---------------+-----+
-                                       |               |
-                                       v               v
-                           +---------------+       +----------------------------+
-                           | Gemini API    |       | Semantic Retrieval Engine  |
-                           | (Grounded LLM)|       | 578 Official Deeplinks     |
-                           +---------------+       +----------------------------+
-                                       |               |
-                                       +-------+-------+
-                                               v
-                                   ContextDeeplinkResponse
-                                       (Samsung Schema)
+[ React + TS Frontend ] ---> POST /api/troubleshoot ---> [ Fastify Node Backend ]
+                                                                   |
+                                                      POST /internal/troubleshoot
+                                                                   v
+[ Official Samsung Response ] <--- ContextDeeplinkResponse <--- [ Python AI Gateway ]
+                                                                 /         \
+                                                     Gemini API         TF-IDF Retriever
+                                                     (Grounded LLM)     (578 Deeplinks)
 ```
 
 ---
@@ -55,15 +28,15 @@ This repository implements the end-to-end working prototype for **Samsung PRISM 
 ## 3. Technology Stack & Rationale
 
 - **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Framer Motion, Lucide Icons.
-  - *Why*: Ultra-fast HMR, strict type safety matching backend payload contracts, responsive design for desktop/mobile demo.
+  - *Rationale*: Type-safe UI matching backend payload contracts, responsive design for desktop/mobile demo.
 - **Application Backend**: Node.js, TypeScript, Fastify.
-  - *Why*: Lightweight API orchestration layer, async I/O, fast payload validation, decoupling client logic from Python AI services.
+  - *Rationale*: Lightweight API orchestration layer, fast request validation, decoupling client logic from Python AI services.
 - **AI/ML Gateway**: Python 3.11, FastAPI, Pydantic v2, `httpx`.
-  - *Why*: Native integration with Gemini API, sentence similarity over official 578 Samsung deeplink catalog, Pydantic schema validation.
+  - *Rationale*: Grounded generation via Gemini API, lexical TF-IDF cosine similarity search over official 578 Samsung deeplink catalog, strict Pydantic schema validation (`ai-gateway/app`).
 
 ---
 
-## 4. Official Data Kit & Read-Only Source Files
+## 4. Official Data Kit (Read-Only Source Inputs)
 
 Stored under `data/` (treated as immutable reference inputs):
 - `data/schema.py`: Official Pydantic response contract (`ContextDeeplinkResponse`, `Goal`, `Action`, `StepGroup`, `Deeplink`, `ValidationDeepLink`).
@@ -97,10 +70,11 @@ Stored under `data/` (treated as immutable reference inputs):
 
 ---
 
-## 6. Grounded Generation & Deeplink Retrieval
+## 6. Grounded Generation, Deterministic Score & Deeplink Retrieval
 
 1. **Grounded Generation**: Gemini API (`gemini-2.5-flash`) extracts diagnostic actions strictly from the supplied SIIS title & content without inventing unsupported steps or external URLs. Fallback grounded extraction is active when API key is unconfigured.
-2. **Semantic Deeplink Retrieval**: `DeeplinkRetriever` indexes all 578 official deeplinks from `data/deeplinks.json` using TF-IDF / vector text similarity. Matches step descriptions to actionable URIs (`bixby://masked/act/...`) and validation checks above a 0.22 similarity threshold.
+2. **Deterministic Relevance Score**: `Goal.score` is calculated as the average TF-IDF cosine similarity of matched catalog deeplinks across all step groups in the goal (bounded in `[0.0, 1.0]`). *Note: This score is a deterministic relevance score, NOT a calibrated probability.*
+3. **Deeplink Retrieval & Threshold Rationale**: `DeeplinkRetriever` indexes all 578 official deeplinks using TF-IDF cosine similarity. Based on empirical threshold evaluation across all 20 benchmark cases, `threshold = 0.22` achieves an 88.43% step match rate while avoiding noisy low-similarity assignments.
 
 ---
 
@@ -112,18 +86,17 @@ Stored under `data/` (treated as immutable reference inputs):
 
 ### Step-by-Step Instructions
 
-1. **Clone & Setup Environment**:
+1. **Setup Environment**:
    ```bash
    cp .env.example .env
    ```
 
 2. **Run Python AI Gateway**:
    ```bash
-   # From project root:
    python -m venv .venv
    .venv\Scripts\activate
-   pip install -r requirements.txt
-   uvicorn app.main:app --host 0.0.0.0 --port 8001
+   pip install -r ai-gateway/requirements.txt
+   uvicorn ai-gateway.app.main:app --host 0.0.0.0 --port 8001
    ```
 
 3. **Run Node.js Application Backend**:
@@ -172,16 +145,15 @@ docker compose up --build
   cd frontend && npm run build
   ```
 
-### Run 20-Case Official Benchmark Suite
+### Run 20-Case Benchmark Suite & Threshold Audit
 ```bash
 python scripts/evaluate.py
 ```
-**Results Summary**:
-- **Cases Evaluated**: 20 / 20
-- **Schema Validation Pass Rate**: 100%
-- **Actions Generated**: 124
-- **Deeplinks Matched**: 146
-- **Average Latency**: ~9.7 ms
+**Benchmark Results**:
+- **Total Cases Evaluated**: 20 / 20
+- **Schema Validation Pass Rate**: 100% (valid Pydantic schema structure)
+- **Average Local Pipeline Latency**: `8.46 ms` (TF-IDF search & deterministic parsing)
+- **Average Gemini API Latency**: `0.0 ms` (unconfigured fallback mode; recorded when API key is set)
 
 ---
 

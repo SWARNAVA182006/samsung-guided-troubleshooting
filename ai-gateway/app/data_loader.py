@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-# Path resolution relative to repository root
+# Project root resolution relative to this file: ai-gateway/app/data_loader.py -> root
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 

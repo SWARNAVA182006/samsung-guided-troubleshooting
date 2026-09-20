@@ -1,10 +1,17 @@
 """Unit and dataset-integrity tests for the read-only data loader and schema models."""
 import hashlib
+import sys
 from pathlib import Path
 import pytest
 
-from app.schemas import ContextDeeplinkResponse
-from app.services.data_loader import (
+# Ensure ai-gateway is in Python path for test execution
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+AI_GATEWAY_PATH = PROJECT_ROOT / "ai-gateway"
+if str(AI_GATEWAY_PATH) not in sys.path:
+    sys.path.insert(0, str(AI_GATEWAY_PATH))
+
+from app.models import ContextDeeplinkResponse
+from app.data_loader import (
     DATA_DIR,
     load_deeplinks,
     load_input_text,
@@ -117,4 +124,3 @@ def test_sample_output_schema_validation():
     assert goal.title == "Screen display damage"
     assert goal.score == 0.95
     assert len(goal.actions) == 2
-

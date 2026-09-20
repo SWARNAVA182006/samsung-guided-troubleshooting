@@ -1,6 +1,15 @@
+import sys
+from pathlib import Path
+
+# Ensure ai-gateway path is in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+AI_GATEWAY_PATH = PROJECT_ROOT / "ai-gateway"
+if str(AI_GATEWAY_PATH) not in sys.path:
+    sys.path.insert(0, str(AI_GATEWAY_PATH))
+
 from fastapi.testclient import TestClient
 from app.main import app
-from app.services.data_loader import load_siis_responses
+from app.data_loader import load_siis_responses
 
 client = TestClient(app)
 
@@ -27,6 +36,9 @@ def test_troubleshoot_valid_strict_request_executes_pipeline() -> None:
     assert "contexts" in data
     assert len(data["contexts"]) > 0
     assert len(data["contexts"][0]["actions"]) > 0
+    # Verify score is bounded in [0.0, 1.0] and non-static
+    score = data["contexts"][0]["score"]
+    assert 0.0 <= score <= 1.0
 
 
 def test_troubleshoot_missing_query_returns_422() -> None:

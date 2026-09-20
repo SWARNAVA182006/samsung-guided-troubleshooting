@@ -1,171 +1,307 @@
 {
   "total_cases": 20,
   "valid_schema_cases": 20,
-  "schema_pass_rate": 100.0,
+  "schema_pass_rate_pct": 100.0,
   "total_actions_generated": 124,
   "total_deeplinks_matched": 146,
-  "average_latency_ms": 9.74,
-  "total_duration_sec": 0.19,
+  "latency_metrics": {
+    "average_local_pipeline_latency_ms": 8.46,
+    "average_gemini_api_latency_ms": 0.0,
+    "latency_note": "Local pipeline latency represents local TF-IDF index search & deterministic parsing. Gemini API latency is recorded when GEMINI_API_KEY is configured."
+  },
+  "total_evaluation_runtime_sec": 0.17,
+  "threshold_audit_summary": {
+    "threshold_0.10": {
+      "threshold": 0.1,
+      "total_queries": 458,
+      "matched_queries": 452,
+      "unmatched_queries": 6,
+      "match_rate_pct": 98.69,
+      "average_matched_similarity": 0.3269,
+      "min_matched_similarity": 0.1435,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.15": {
+      "threshold": 0.15,
+      "total_queries": 458,
+      "matched_queries": 449,
+      "unmatched_queries": 9,
+      "match_rate_pct": 98.03,
+      "average_matched_similarity": 0.3282,
+      "min_matched_similarity": 0.1506,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.20": {
+      "threshold": 0.2,
+      "total_queries": 458,
+      "matched_queries": 423,
+      "unmatched_queries": 35,
+      "match_rate_pct": 92.36,
+      "average_matched_similarity": 0.3378,
+      "min_matched_similarity": 0.2032,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.22": {
+      "threshold": 0.22,
+      "total_queries": 458,
+      "matched_queries": 405,
+      "unmatched_queries": 53,
+      "match_rate_pct": 88.43,
+      "average_matched_similarity": 0.3433,
+      "min_matched_similarity": 0.2215,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.25": {
+      "threshold": 0.25,
+      "total_queries": 458,
+      "matched_queries": 364,
+      "unmatched_queries": 94,
+      "match_rate_pct": 79.48,
+      "average_matched_similarity": 0.3557,
+      "min_matched_similarity": 0.2527,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.30": {
+      "threshold": 0.3,
+      "total_queries": 458,
+      "matched_queries": 252,
+      "unmatched_queries": 206,
+      "match_rate_pct": 55.02,
+      "average_matched_similarity": 0.3905,
+      "min_matched_similarity": 0.3003,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.35": {
+      "threshold": 0.35,
+      "total_queries": 458,
+      "matched_queries": 141,
+      "unmatched_queries": 317,
+      "match_rate_pct": 30.79,
+      "average_matched_similarity": 0.4453,
+      "min_matched_similarity": 0.353,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.40": {
+      "threshold": 0.4,
+      "total_queries": 458,
+      "matched_queries": 83,
+      "unmatched_queries": 375,
+      "match_rate_pct": 18.12,
+      "average_matched_similarity": 0.494,
+      "min_matched_similarity": 0.4054,
+      "max_matched_similarity": 0.7662
+    },
+    "threshold_0.50": {
+      "threshold": 0.5,
+      "total_queries": 458,
+      "matched_queries": 27,
+      "unmatched_queries": 431,
+      "match_rate_pct": 5.9,
+      "average_matched_similarity": 0.599,
+      "min_matched_similarity": 0.5056,
+      "max_matched_similarity": 0.7662
+    }
+  },
   "case_details": [
     {
       "id": "row_1",
       "title": "Email server not responding on Samsung phone or ta",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3291,
       "actions_count": 7,
       "deeplinks_count": 10,
-      "latency_ms": 20.21
+      "local_pipeline_latency_ms": 20.57,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_2",
       "title": "Blank or black display on a Samsung phone or table",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.2662,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 7.21
+      "local_pipeline_latency_ms": 5.52,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_3",
       "title": "Some things to check first",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3352,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 6.55
+      "local_pipeline_latency_ms": 7.01,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_4",
       "title": "Blank or black display on a Samsung phone or table",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.2662,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 5.52
+      "local_pipeline_latency_ms": 6.55,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_5",
       "title": "Transfer Secure folder with Smart Switch",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3093,
       "actions_count": 4,
       "deeplinks_count": 3,
-      "latency_ms": 3.01
+      "local_pipeline_latency_ms": 2.52,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_7",
       "title": "Use Multi window and App pairs on your Galaxy phon",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3669,
       "actions_count": 9,
       "deeplinks_count": 13,
-      "latency_ms": 19.65
+      "local_pipeline_latency_ms": 18.01,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_8",
       "title": "Screen mirroring to your Samsung TV",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3054,
       "actions_count": 11,
       "deeplinks_count": 17,
-      "latency_ms": 21.16
+      "local_pipeline_latency_ms": 19.48,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_9",
       "title": "Access your Galaxy phone's data if the screen does",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3184,
       "actions_count": 2,
       "deeplinks_count": 2,
-      "latency_ms": 4.09
+      "local_pipeline_latency_ms": 3.51,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_10",
       "title": "Screen flickers when using the Camera on a Galaxy ",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.2918,
       "actions_count": 3,
       "deeplinks_count": 3,
-      "latency_ms": 3.03
+      "local_pipeline_latency_ms": 2.5,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_11",
       "title": "Some things to check first",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3352,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 7.07
+      "local_pipeline_latency_ms": 6.01,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_12",
       "title": "Use Multi window and App pairs on your Galaxy phon",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3669,
       "actions_count": 9,
       "deeplinks_count": 13,
-      "latency_ms": 20.94
+      "local_pipeline_latency_ms": 18.74,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_13",
       "title": "Blank or black display on a Samsung phone or table",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.2662,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 9.67
+      "local_pipeline_latency_ms": 6.02,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_14",
       "title": "Cracked or bleeding screen on Galaxy phone or tabl",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3303,
       "actions_count": 8,
       "deeplinks_count": 7,
-      "latency_ms": 7.29
+      "local_pipeline_latency_ms": 4.0,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_15",
       "title": "Blank or black display on a Samsung phone or table",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.2662,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 9.27
+      "local_pipeline_latency_ms": 6.59,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_16",
       "title": "Blank or black display on a Samsung phone or table",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.2662,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 7.66
+      "local_pipeline_latency_ms": 6.68,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_17",
       "title": "Some things to check first",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3352,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 6.61
+      "local_pipeline_latency_ms": 5.7,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_19",
       "title": "Cracked or bleeding screen on Galaxy phone or tabl",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3303,
       "actions_count": 8,
       "deeplinks_count": 7,
-      "latency_ms": 6.19
+      "local_pipeline_latency_ms": 4.78,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_20",
       "title": "Screen does not rotate on Galaxy phone or tablet",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3409,
       "actions_count": 8,
       "deeplinks_count": 8,
-      "latency_ms": 9.7
+      "local_pipeline_latency_ms": 6.56,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_21",
       "title": "Touchscreen issues on a Galaxy phone or tablet",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.3769,
       "actions_count": 10,
       "deeplinks_count": 9,
-      "latency_ms": 13.28
+      "local_pipeline_latency_ms": 12.79,
+      "gemini_api_latency_ms": 0.0
     },
     {
       "id": "row_22",
       "title": "Blank or black display on a Samsung phone or table",
-      "valid": true,
+      "schema_valid": true,
+      "computed_score": 0.2662,
       "actions_count": 5,
       "deeplinks_count": 6,
-      "latency_ms": 6.62
+      "local_pipeline_latency_ms": 5.67,
+      "gemini_api_latency_ms": 0.0
     }
   ]
 }

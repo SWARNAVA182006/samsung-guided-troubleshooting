@@ -2,10 +2,10 @@
 import json
 import os
 import re
+import time
 from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
-from pydantic import ValidationError
 
 from .models import (
     Action,
@@ -47,13 +47,14 @@ def _extract_steps_from_siis_content(content: str) -> List[Tuple[str, List[str]]
     return sections
 
 
-async def generate_troubleshooting(request: TroubleshootRequest) -> ContextDeeplinkResponse:
-    """Run grounded generation via Gemini API (if key available) or deterministic grounded extraction,
-
-    then enrich step groups with official Samsung deeplinks and validate against ContextDeeplinkResponse.
-    """
+async def generate_troubleshooting_with_timing(
+    request: TroubleshootRequest,
+) -> Tuple[ContextDeeplinkResponse, float, float]:
+    """Execute grounded pipeline and return (response, local_pipeline_latency_ms, gemini_api_latency_ms)."""
+    local_start = time.time()
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     raw_goal_data: Optional[Dict[str, Any]] = None
+    gemini_latency_ms = 0.0
 
     if api_key:
         prompt = (
@@ -87,17 +88,19 @@ async def generate_troubleshooting(request: TroubleshootRequest) -> ContextDeepl
             "generationConfig": {"response_mime_type": "application/json"},
         }
         url = f"{GEMINI_API_URL}?key={api_key}"
-        async with httpx.AsyncClient(timeout=25.0) as client:
-            resp = await client.post(url, json=payload)
-            if resp.status_code == 200:
-                result = resp.json()
-                try:
+        gemini_start = time.time()
+        try:
+            async with httpx.AsyncClient(timeout=25.0) as client:
+                resp = await client.post(url, json=payload)
+                gemini_latency_ms = round((time.time() - gemini_start) * 1000, 2)
+                if resp.status_code == 200:
+                    result = resp.json()
                     text_content = result["candidates"][0]["content"]["parts"][0]["text"]
                     raw_goal_data = json.loads(text_content)
-                except Exception:
-                    raw_goal_data = None
+        except Exception:
+            gemini_latency_ms = round((time.time() - gemini_start) * 1000, 2)
+            raw_goal_data = None
 
-    # Fallback deterministic grounded extraction if no API key or API call failed/unsupported
     if not raw_goal_data:
         extracted = _extract_steps_from_siis_content(request.siis_response.content)
         actions_list = []
@@ -122,6 +125,7 @@ async def generate_troubleshooting(request: TroubleshootRequest) -> ContextDeepl
     # Normalize & enrich with official Samsung deeplinks from catalog
     retriever = get_retriever()
     actions: List[Action] = []
+    matched_scores: List[float] = []
 
     for raw_act in raw_goal_data.get("actions", []):
         act_name = raw_act.get("actionName", "Diagnostic Action")
@@ -143,7 +147,8 @@ async def generate_troubleshooting(request: TroubleshootRequest) -> ContextDeepl
             act_dl = None
             val_dl = None
             if match_res:
-                act_dl, val_dl, _score = match_res
+                act_dl, val_dl, sim_score = match_res
+                matched_scores.append(sim_score)
 
             step_groups.append(
                 StepGroup(
@@ -163,11 +168,27 @@ async def generate_troubleshooting(request: TroubleshootRequest) -> ContextDeepl
                 )
             )
 
+    # Calculate deterministic relevance score (bounded in [0.0, 1.0])
+    if matched_scores:
+        computed_score = round(min(1.0, max(0.0, sum(matched_scores) / len(matched_scores))), 4)
+    else:
+        # Grounding text overlap fallback score if no catalog deeplinks matched
+        query_words = set(re.findall(r"\w+", request.query.lower()))
+        siis_words = set(re.findall(r"\w+", request.siis_response.content.lower()))
+        overlap = len(query_words.intersection(siis_words)) / len(query_words) if query_words else 0.5
+        computed_score = round(min(1.0, max(0.1, overlap)), 4)
+
     goal_obj = Goal(
         goal=raw_goal_data.get("goal", f"Troubleshooting for {request.siis_response.title}"),
         title=raw_goal_data.get("title", request.siis_response.title),
         actions=actions,
-        score=0.95,
+        score=computed_score,
     )
 
-    return ContextDeeplinkResponse(contexts=[goal_obj])
+    local_latency_ms = round((time.time() - local_start) * 1000, 2)
+    return ContextDeeplinkResponse(contexts=[goal_obj]), local_latency_ms, gemini_latency_ms
+
+
+async def generate_troubleshooting(request: TroubleshootRequest) -> ContextDeeplinkResponse:
+    response, _local_lat, _gem_lat = await generate_troubleshooting_with_timing(request)
+    return response

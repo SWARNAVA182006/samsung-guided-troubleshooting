@@ -1,4 +1,4 @@
-"""Official Samsung Deeplink retrieval engine.
+"""Official Samsung Deeplink retrieval engine using lexical TF-IDF cosine similarity.
 
 Indexes the official 578-entry catalog from data/deeplinks.json and matches
 troubleshooting step descriptions against actionable & validation URIs.
@@ -45,7 +45,7 @@ def _compute_tf_idf_vectors(documents: List[str]) -> Tuple[List[Dict[str, float]
 
 
 class DeeplinkRetriever:
-    """Semantic retrieval index for official Samsung deeplinks."""
+    """Lexical TF-IDF cosine similarity retrieval index for official Samsung deeplinks."""
 
     def __init__(self, data_dir: Optional[Any] = None):
         raw_data = load_deeplinks(data_dir)
@@ -61,11 +61,11 @@ class DeeplinkRetriever:
         self.vectors, self.idf = _compute_tf_idf_vectors(self.doc_texts)
 
     def search(
-        self, query: str, threshold: float = 0.25
+        self, query: str, threshold: float = 0.22
     ) -> Optional[Tuple[Deeplink, Optional[ValidationDeepLink], float]]:
         """Search top matching official deeplink for a step description.
 
-        Returns (actionable_deeplink, validation_deeplink, score) if score >= threshold, else None.
+        Returns (actionable_deeplink, validation_deeplink, similarity_score) if score >= threshold, else None.
         """
         query_tokens = _tokenize(query)
         if not query_tokens:
@@ -121,7 +121,6 @@ class DeeplinkRetriever:
         return None
 
 
-# Global singleton retriever instance
 _retriever: Optional[DeeplinkRetriever] = None
 
 

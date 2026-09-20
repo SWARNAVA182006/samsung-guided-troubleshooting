@@ -1,0 +1,171 @@
+{
+  "total_cases": 20,
+  "valid_schema_cases": 20,
+  "schema_pass_rate": 100.0,
+  "total_actions_generated": 124,
+  "total_deeplinks_matched": 146,
+  "average_latency_ms": 9.74,
+  "total_duration_sec": 0.19,
+  "case_details": [
+    {
+      "id": "row_1",
+      "title": "Email server not responding on Samsung phone or ta",
+      "valid": true,
+      "actions_count": 7,
+      "deeplinks_count": 10,
+      "latency_ms": 20.21
+    },
+    {
+      "id": "row_2",
+      "title": "Blank or black display on a Samsung phone or table",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 7.21
+    },
+    {
+      "id": "row_3",
+      "title": "Some things to check first",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 6.55
+    },
+    {
+      "id": "row_4",
+      "title": "Blank or black display on a Samsung phone or table",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 5.52
+    },
+    {
+      "id": "row_5",
+      "title": "Transfer Secure folder with Smart Switch",
+      "valid": true,
+      "actions_count": 4,
+      "deeplinks_count": 3,
+      "latency_ms": 3.01
+    },
+    {
+      "id": "row_7",
+      "title": "Use Multi window and App pairs on your Galaxy phon",
+      "valid": true,
+      "actions_count": 9,
+      "deeplinks_count": 13,
+      "latency_ms": 19.65
+    },
+    {
+      "id": "row_8",
+      "title": "Screen mirroring to your Samsung TV",
+      "valid": true,
+      "actions_count": 11,
+      "deeplinks_count": 17,
+      "latency_ms": 21.16
+    },
+    {
+      "id": "row_9",
+      "title": "Access your Galaxy phone's data if the screen does",
+      "valid": true,
+      "actions_count": 2,
+      "deeplinks_count": 2,
+      "latency_ms": 4.09
+    },
+    {
+      "id": "row_10",
+      "title": "Screen flickers when using the Camera on a Galaxy ",
+      "valid": true,
+      "actions_count": 3,
+      "deeplinks_count": 3,
+      "latency_ms": 3.03
+    },
+    {
+      "id": "row_11",
+      "title": "Some things to check first",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 7.07
+    },
+    {
+      "id": "row_12",
+      "title": "Use Multi window and App pairs on your Galaxy phon",
+      "valid": true,
+      "actions_count": 9,
+      "deeplinks_count": 13,
+      "latency_ms": 20.94
+    },
+    {
+      "id": "row_13",
+      "title": "Blank or black display on a Samsung phone or table",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 9.67
+    },
+    {
+      "id": "row_14",
+      "title": "Cracked or bleeding screen on Galaxy phone or tabl",
+      "valid": true,
+      "actions_count": 8,
+      "deeplinks_count": 7,
+      "latency_ms": 7.29
+    },
+    {
+      "id": "row_15",
+      "title": "Blank or black display on a Samsung phone or table",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 9.27
+    },
+    {
+      "id": "row_16",
+      "title": "Blank or black display on a Samsung phone or table",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 7.66
+    },
+    {
+      "id": "row_17",
+      "title": "Some things to check first",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 6.61
+    },
+    {
+      "id": "row_19",
+      "title": "Cracked or bleeding screen on Galaxy phone or tabl",
+      "valid": true,
+      "actions_count": 8,
+      "deeplinks_count": 7,
+      "latency_ms": 6.19
+    },
+    {
+      "id": "row_20",
+      "title": "Screen does not rotate on Galaxy phone or tablet",
+      "valid": true,
+      "actions_count": 8,
+      "deeplinks_count": 8,
+      "latency_ms": 9.7
+    },
+    {
+      "id": "row_21",
+      "title": "Touchscreen issues on a Galaxy phone or tablet",
+      "valid": true,
+      "actions_count": 10,
+      "deeplinks_count": 9,
+      "latency_ms": 13.28
+    },
+    {
+      "id": "row_22",
+      "title": "Blank or black display on a Samsung phone or table",
+      "valid": true,
+      "actions_count": 5,
+      "deeplinks_count": 6,
+      "latency_ms": 6.62
+    }
+  ]
+}

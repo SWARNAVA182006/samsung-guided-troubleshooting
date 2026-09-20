@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  ai-gateway:
+    build:
+      context: .
+      dockerfile: ai-gateway/Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - PORT=8001
+    volumes:
+      - ./data:/app/data:ro
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_PORT=3000
+      - AI_GATEWAY_URL=http://ai-gateway:8001
+      - FRONTEND_ORIGIN=*
+    depends_on:
+      - ai-gateway
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_NODE_BACKEND_URL=http://localhost:3000
+    depends_on:
+      - backend

@@ -1,10 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── DESIGN TOKENS (SAMSUNG-INSPIRED PRODUCT SYSTEM) ───────────────────── */
+:root {
+  --bg-primary: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-subtle: rgba(15, 23, 42, 0.12);
+  --border-accent: rgba(18, 89, 195, 0.35);
+  --accent-blue: #1259c3;
+  --accent-cyan: #0284c7;
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --radius-oneui: 1.25rem;
+  --shadow-soft: 0 10px 30px -10px rgba(18, 89, 195, 0.15);
+}
+
+html.dark {
+  --bg-primary: #070d1e;
+  --bg-surface: #151f42;
+  --bg-elevated: #1c2541;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-subtle: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(0, 198, 255, 0.35);
+  --accent-blue: #2563eb;
+  --accent-cyan: #00c6ff;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --shadow-soft: 0 12px 35px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* ── BASE RESET ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  background-color: #0b132b;
-  color: #f1f5f9;
-  font-family: 'Inter', sans-serif;
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── PROMINENT AMBIENT GRADIENT BACKGROUNDS ──────────────────────────────── */
+.bg-app-light {
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(ellipse at 25% 10%, rgba(18, 89, 195, 0.12), transparent 50%),
+    radial-gradient(ellipse at 85% 75%, rgba(2, 132, 199, 0.10), transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(241, 245, 249, 0.8), transparent 80%);
+  background-attachment: fixed;
+}
+
+.bg-app-dark {
+  background-color: #070d1e;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(18, 89, 195, 0.35), transparent 60%),
+    radial-gradient(ellipse at 80% 85%, rgba(0, 198, 255, 0.22), transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(15, 23, 42, 0.9), transparent 85%);
+  background-attachment: fixed;
+}
+
+#root {
+  height: 100%;
+}
+
+code, .font-mono, pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── SCROLLBARS ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+/* ── ANIMATIONS ─────────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out both;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.35s ease-out both;
+}
+
+/* ── ACCESSIBILITY: REDUCED MOTION SUPPORT ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce), html.reduce-motion {
+  *, ::before, ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

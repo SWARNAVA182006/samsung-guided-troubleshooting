@@ -37,7 +37,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       });
     }
 
-    const aiGatewayUrl = process.env.AI_GATEWAY_URL || "http://127.0.0.1:8000";
+    const aiGatewayUrl = process.env.AI_GATEWAY_URL || "http://127.0.0.1:8001";
     const targetEndpoint = `${aiGatewayUrl}/internal/troubleshoot`;
 
     try {

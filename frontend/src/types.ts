@@ -49,3 +49,33 @@ export interface TroubleshootRequest {
   query: string;
   siis_response: SIISPayload;
 }
+
+export type NavigationTab = "home" | "troubleshoot" | "history" | "how-it-works" | "settings";
+
+export type ThemeMode = "dark" | "light" | "system";
+
+export interface HistoryItem {
+  id: string;
+  timestamp: number;
+  query: string;
+  title: string;
+  actionsCount: number;
+  stepsCount: number;
+  deeplinksCount: number;
+  score: number;
+  response: ContextDeeplinkResponse;
+}
+
+export interface ToastMessage {
+  id: string;
+  type: "success" | "info" | "error";
+  message: string;
+}
+
+export interface PresetCase {
+  id: string;
+  label: string;
+  category: string;
+  query: string;
+  siis_response: SIISPayload;
+}

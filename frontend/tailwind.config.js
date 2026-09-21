@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -11,7 +12,16 @@ export default {
           lightBg: "#0B132B",
           cardBg: "#1C2541",
           highlight: "#00C6FF",
+          cobalt: "#0A192F",
+          deepSlate: "#0F172A",
         },
+      },
+      fontFamily: {
+        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+      },
+      borderRadius: {
+        "oneui": "1.25rem",
+        "oneui-lg": "1.5rem",
       },
     },
   },

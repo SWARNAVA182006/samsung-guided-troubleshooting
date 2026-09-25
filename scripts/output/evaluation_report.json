@@ -11,12 +11,12 @@
   "total_actionable_deeplinks": 146,
   "total_validation_deeplinks": 0,
   "latency_metrics": {
-    "average_local_pipeline_latency_ms": 2267.42,
-    "average_gemini_api_latency_ms": 2232.49,
+    "average_local_pipeline_latency_ms": 4486.32,
+    "average_gemini_api_latency_ms": 4439.85,
     "note": "Local pipeline latency reflects deterministic token matching and TF-IDF search. Gemini latency represents live remote inference."
   },
   "cache_evaluation": {
-    "cache_miss_latency_ms": 2449.75,
+    "cache_miss_latency_ms": 2780.82,
     "exact_repeat_latency_ms": 0.0,
     "exact_repeat_hit": true,
     "exact_speedup_factor": 1.0,
@@ -28,7 +28,7 @@
     "zero_url_leaks_passed": true,
     "unseen_scenario_generalization_passed": true
   },
-  "total_evaluation_runtime_sec": 45.37,
+  "total_evaluation_runtime_sec": 89.74,
   "threshold_audit_summary": {
     "threshold_0.10": {
       "threshold": 0.1,
@@ -36,19 +36,19 @@
       "matched_queries": 452,
       "unmatched_queries": 6,
       "match_rate_pct": 98.69,
-      "average_matched_similarity": 0.3269,
-      "min_matched_similarity": 0.1435,
-      "max_matched_similarity": 0.7662
+      "average_matched_similarity": 0.3258,
+      "min_matched_similarity": 0.1429,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.15": {
       "threshold": 0.15,
       "total_queries": 458,
-      "matched_queries": 449,
-      "unmatched_queries": 9,
-      "match_rate_pct": 98.03,
-      "average_matched_similarity": 0.3282,
-      "min_matched_similarity": 0.1506,
-      "max_matched_similarity": 0.7662
+      "matched_queries": 443,
+      "unmatched_queries": 15,
+      "match_rate_pct": 96.72,
+      "average_matched_similarity": 0.3294,
+      "min_matched_similarity": 0.1514,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.20": {
       "threshold": 0.2,
@@ -56,9 +56,9 @@
       "matched_queries": 423,
       "unmatched_queries": 35,
       "match_rate_pct": 92.36,
-      "average_matched_similarity": 0.3378,
-      "min_matched_similarity": 0.2032,
-      "max_matched_similarity": 0.7662
+      "average_matched_similarity": 0.3367,
+      "min_matched_similarity": 0.2024,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.22": {
       "threshold": 0.22,
@@ -66,9 +66,9 @@
       "matched_queries": 405,
       "unmatched_queries": 53,
       "match_rate_pct": 88.43,
-      "average_matched_similarity": 0.3433,
-      "min_matched_similarity": 0.2215,
-      "max_matched_similarity": 0.7662
+      "average_matched_similarity": 0.3422,
+      "min_matched_similarity": 0.2208,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.25": {
       "threshold": 0.25,
@@ -76,19 +76,19 @@
       "matched_queries": 364,
       "unmatched_queries": 94,
       "match_rate_pct": 79.48,
-      "average_matched_similarity": 0.3557,
-      "min_matched_similarity": 0.2527,
-      "max_matched_similarity": 0.7662
+      "average_matched_similarity": 0.3545,
+      "min_matched_similarity": 0.2517,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.30": {
       "threshold": 0.3,
       "total_queries": 458,
-      "matched_queries": 252,
-      "unmatched_queries": 206,
-      "match_rate_pct": 55.02,
-      "average_matched_similarity": 0.3905,
-      "min_matched_similarity": 0.3003,
-      "max_matched_similarity": 0.7662
+      "matched_queries": 247,
+      "unmatched_queries": 211,
+      "match_rate_pct": 53.93,
+      "average_matched_similarity": 0.3909,
+      "min_matched_similarity": 0.3002,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.35": {
       "threshold": 0.35,
@@ -96,9 +96,9 @@
       "matched_queries": 141,
       "unmatched_queries": 317,
       "match_rate_pct": 30.79,
-      "average_matched_similarity": 0.4453,
-      "min_matched_similarity": 0.353,
-      "max_matched_similarity": 0.7662
+      "average_matched_similarity": 0.4438,
+      "min_matched_similarity": 0.3522,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.40": {
       "threshold": 0.4,
@@ -106,9 +106,9 @@
       "matched_queries": 83,
       "unmatched_queries": 375,
       "match_rate_pct": 18.12,
-      "average_matched_similarity": 0.494,
-      "min_matched_similarity": 0.4054,
-      "max_matched_similarity": 0.7662
+      "average_matched_similarity": 0.4924,
+      "min_matched_similarity": 0.4044,
+      "max_matched_similarity": 0.7643
     },
     "threshold_0.50": {
       "threshold": 0.5,
@@ -116,9 +116,9 @@
       "matched_queries": 27,
       "unmatched_queries": 431,
       "match_rate_pct": 5.9,
-      "average_matched_similarity": 0.599,
-      "min_matched_similarity": 0.5056,
-      "max_matched_similarity": 0.7662
+      "average_matched_similarity": 0.5974,
+      "min_matched_similarity": 0.5036,
+      "max_matched_similarity": 0.7643
     }
   },
   "case_details": [
@@ -129,15 +129,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3291,
+      "computed_score": 0.3279,
       "actions_count": 7,
       "step_groups_count": 10,
       "steps_count": 29,
       "actionable_deeplinks": 10,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1647.86,
-      "gemini_api_latency_ms": 1616.36
+      "local_pipeline_latency_ms": 8486.91,
+      "gemini_api_latency_ms": 8294.59
     },
     {
       "id": "row_2",
@@ -146,15 +146,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.2662,
+      "computed_score": 0.2652,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 13,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1409.53,
-      "gemini_api_latency_ms": 1396.4
+      "local_pipeline_latency_ms": 6101.65,
+      "gemini_api_latency_ms": 6050.02
     },
     {
       "id": "row_3",
@@ -163,15 +163,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3352,
+      "computed_score": 0.3341,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 15,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1460.01,
-      "gemini_api_latency_ms": 1430.06
+      "local_pipeline_latency_ms": 5012.35,
+      "gemini_api_latency_ms": 4968.12
     },
     {
       "id": "row_4",
@@ -180,15 +180,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.2662,
+      "computed_score": 0.2652,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 13,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2663.52,
-      "gemini_api_latency_ms": 2634.94
+      "local_pipeline_latency_ms": 6050.8,
+      "gemini_api_latency_ms": 5998.2
     },
     {
       "id": "row_5",
@@ -197,15 +197,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3093,
+      "computed_score": 0.3081,
       "actions_count": 4,
       "step_groups_count": 4,
       "steps_count": 6,
       "actionable_deeplinks": 3,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2499.79,
-      "gemini_api_latency_ms": 2489.86
+      "local_pipeline_latency_ms": 7334.79,
+      "gemini_api_latency_ms": 7318.67
     },
     {
       "id": "row_7",
@@ -214,15 +214,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3669,
+      "computed_score": 0.3656,
       "actions_count": 9,
       "step_groups_count": 13,
       "steps_count": 36,
       "actionable_deeplinks": 13,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2567.49,
-      "gemini_api_latency_ms": 2482.44
+      "local_pipeline_latency_ms": 6781.93,
+      "gemini_api_latency_ms": 6642.84
     },
     {
       "id": "row_8",
@@ -231,15 +231,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3054,
+      "computed_score": 0.3039,
       "actions_count": 11,
       "step_groups_count": 17,
       "steps_count": 55,
       "actionable_deeplinks": 17,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2176.3,
-      "gemini_api_latency_ms": 2069.51
+      "local_pipeline_latency_ms": 5561.78,
+      "gemini_api_latency_ms": 5488.65
     },
     {
       "id": "row_9",
@@ -248,15 +248,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3184,
+      "computed_score": 0.3173,
       "actions_count": 2,
       "step_groups_count": 2,
       "steps_count": 8,
       "actionable_deeplinks": 2,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2239.89,
-      "gemini_api_latency_ms": 2211.97
+      "local_pipeline_latency_ms": 2406.82,
+      "gemini_api_latency_ms": 2386.89
     },
     {
       "id": "row_10",
@@ -265,15 +265,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.2918,
+      "computed_score": 0.2911,
       "actions_count": 3,
       "step_groups_count": 3,
       "steps_count": 5,
       "actionable_deeplinks": 3,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2261.84,
-      "gemini_api_latency_ms": 2240.01
+      "local_pipeline_latency_ms": 2923.07,
+      "gemini_api_latency_ms": 2910.11
     },
     {
       "id": "row_11",
@@ -282,15 +282,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3352,
+      "computed_score": 0.3341,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 15,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2175.95,
-      "gemini_api_latency_ms": 2135.05
+      "local_pipeline_latency_ms": 2916.7,
+      "gemini_api_latency_ms": 2890.95
     },
     {
       "id": "row_12",
@@ -299,15 +299,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3669,
+      "computed_score": 0.3656,
       "actions_count": 9,
       "step_groups_count": 13,
       "steps_count": 36,
       "actionable_deeplinks": 13,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2604.17,
-      "gemini_api_latency_ms": 2515.42
+      "local_pipeline_latency_ms": 3009.51,
+      "gemini_api_latency_ms": 2943.27
     },
     {
       "id": "row_13",
@@ -316,15 +316,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.2662,
+      "computed_score": 0.2652,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 13,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2102.74,
-      "gemini_api_latency_ms": 2064.41
+      "local_pipeline_latency_ms": 1881.64,
+      "gemini_api_latency_ms": 1870.27
     },
     {
       "id": "row_14",
@@ -333,15 +333,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3303,
+      "computed_score": 0.3297,
       "actions_count": 8,
       "step_groups_count": 8,
       "steps_count": 9,
       "actionable_deeplinks": 7,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1923.25,
-      "gemini_api_latency_ms": 1900.44
+      "local_pipeline_latency_ms": 2878.26,
+      "gemini_api_latency_ms": 2854.37
     },
     {
       "id": "row_15",
@@ -350,15 +350,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.2662,
+      "computed_score": 0.2652,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 13,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2152.89,
-      "gemini_api_latency_ms": 2136.54
+      "local_pipeline_latency_ms": 1915.01,
+      "gemini_api_latency_ms": 1900.25
     },
     {
       "id": "row_16",
@@ -367,15 +367,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.2662,
+      "computed_score": 0.2652,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 13,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2660.86,
-      "gemini_api_latency_ms": 2646.22
+      "local_pipeline_latency_ms": 2589.11,
+      "gemini_api_latency_ms": 2565.28
     },
     {
       "id": "row_17",
@@ -384,15 +384,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3352,
+      "computed_score": 0.3341,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 15,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2869.01,
-      "gemini_api_latency_ms": 2855.79
+      "local_pipeline_latency_ms": 3588.31,
+      "gemini_api_latency_ms": 3565.07
     },
     {
       "id": "row_19",
@@ -401,15 +401,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3303,
+      "computed_score": 0.3297,
       "actions_count": 8,
       "step_groups_count": 8,
       "steps_count": 9,
       "actionable_deeplinks": 7,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2358.92,
-      "gemini_api_latency_ms": 2338.89
+      "local_pipeline_latency_ms": 5117.98,
+      "gemini_api_latency_ms": 5091.06
     },
     {
       "id": "row_20",
@@ -418,15 +418,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3409,
+      "computed_score": 0.34,
       "actions_count": 8,
       "step_groups_count": 8,
       "steps_count": 17,
       "actionable_deeplinks": 8,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2443.23,
-      "gemini_api_latency_ms": 2431.79
+      "local_pipeline_latency_ms": 7076.64,
+      "gemini_api_latency_ms": 7043.24
     },
     {
       "id": "row_21",
@@ -435,15 +435,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.3769,
+      "computed_score": 0.3757,
       "actions_count": 10,
       "step_groups_count": 11,
       "steps_count": 24,
       "actionable_deeplinks": 9,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2495.73,
-      "gemini_api_latency_ms": 2443.63
+      "local_pipeline_latency_ms": 4829.9,
+      "gemini_api_latency_ms": 4779.79
     },
     {
       "id": "row_22",
@@ -452,15 +452,15 @@
       "gemini_called": true,
       "gemini_succeeded": false,
       "deterministic_fallback_used": true,
-      "computed_score": 0.2662,
+      "computed_score": 0.2652,
       "actions_count": 5,
       "step_groups_count": 6,
       "steps_count": 13,
       "actionable_deeplinks": 6,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 2635.33,
-      "gemini_api_latency_ms": 2610.02
+      "local_pipeline_latency_ms": 3263.21,
+      "gemini_api_latency_ms": 3235.37
     }
   ]
 }

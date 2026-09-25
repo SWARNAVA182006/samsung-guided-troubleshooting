@@ -483,44 +483,61 @@ export const App: React.FC = () => {
     pushToast("info", "Restored previous session.");
   };
 
-  // ── TAB CONTENT RENDERERS ───────────────────────────────────────────────────
+  const [showBenchmark, setShowBenchmark] = useState<boolean>(false);
 
   const renderTroubleshootTab = () => (
     <div className="space-y-6">
-      {/* Benchmark Case Quick Selector */}
-      <div className="bg-white/90 dark:bg-slate-900/80 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700/60 shadow-sm backdrop-blur-md">
-        <div className="flex items-center justify-between mb-3">
+      {/* Benchmark Case Selector — collapsible for judges / evaluation mode */}
+      <div className="bg-white/90 dark:bg-slate-900/80 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 shadow-sm backdrop-blur-md overflow-hidden">
+        <button
+          onClick={() => setShowBenchmark((v) => !v)}
+          className="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500/40"
+          aria-expanded={showBenchmark}
+          aria-controls="benchmark-selector"
+        >
           <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
-            <BookOpen className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+            <BookOpen className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" aria-hidden="true" />
             <span>Samsung Benchmark Cases ({BENCHMARK_PRESETS.length})</span>
+            <span className="text-[10px] font-normal text-slate-500 normal-case tracking-normal">
+              — For judges & evaluation
+            </span>
           </div>
-          <span className="text-[10px] text-slate-500 font-semibold">Click any preset to test</span>
-        </div>
+          <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+            <span>{showBenchmark ? "Hide" : "Show all 20 cases"}</span>
+            <span className="text-slate-400">{showBenchmark ? "▲" : "▼"}</span>
+          </div>
+        </button>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 max-h-48 overflow-y-auto pr-1">
-          {BENCHMARK_PRESETS.map((p) => {
-            const isSelected = selectedPreset?.id === p.id;
-            return (
-              <button
-                key={p.id}
-                onClick={() => handleSelectPreset(p)}
-                className={`text-left p-2.5 rounded-xl border text-[11px] transition-all flex flex-col gap-1 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 ${
-                  isSelected
-                    ? "bg-blue-100 dark:bg-blue-600/30 border-blue-600 dark:border-cyan-400 text-blue-950 dark:text-white font-bold shadow-sm"
-                    : "bg-slate-50/80 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/60 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
-                }`}
-              >
-                <div className="font-mono font-bold text-cyan-700 dark:text-cyan-400">[{p.id}]</div>
-                <div className="font-semibold text-slate-900 dark:text-slate-100 leading-tight line-clamp-2">
-                  {p.label}
-                </div>
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium w-fit">
-                  {p.category}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        {showBenchmark && (
+          <div id="benchmark-selector" className="px-4 pb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 max-h-52 overflow-y-auto pr-1">
+              {BENCHMARK_PRESETS.map((p) => {
+                const isSelected = selectedPreset?.id === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => handleSelectPreset(p)}
+                    className={`text-left p-2.5 rounded-xl border text-[11px] transition-all flex flex-col gap-1 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 ${
+                      isSelected
+                        ? "bg-blue-100 dark:bg-blue-600/30 border-blue-600 dark:border-cyan-400 text-blue-950 dark:text-white font-bold shadow-sm"
+                        : "bg-slate-50/80 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/60 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
+                    aria-pressed={isSelected}
+                    aria-label={`Select benchmark case: ${p.label}`}
+                  >
+                    <div className="font-mono font-bold text-cyan-700 dark:text-cyan-400">[{p.id}]</div>
+                    <div className="font-semibold text-slate-900 dark:text-slate-100 leading-tight line-clamp-2">
+                      {p.label}
+                    </div>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium w-fit">
+                      {p.category}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -538,14 +555,17 @@ export const App: React.FC = () => {
           {isLoading && <LoadingView />}
 
           {error && !isLoading && (
-            <div className="bg-white/95 dark:bg-slate-900/90 rounded-2xl p-6 border border-red-300 dark:border-red-500/50 shadow-xl space-y-3">
+            <div
+              role="alert"
+              className="bg-white/95 dark:bg-slate-900/90 rounded-2xl p-6 border border-red-300 dark:border-red-500/50 shadow-xl space-y-3"
+            >
               <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold">
-                <AlertCircle className="w-5 h-5" />
+                <AlertCircle className="w-5 h-5" aria-hidden="true" />
                 <span>Unable to complete request</span>
               </div>
               <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-medium">{error}</p>
               <div className="text-[11px] text-slate-500 pt-2 border-t border-slate-200 dark:border-slate-700/50">
-                Please verify your local backend connection (port 3000) and try submitting again.
+                Please verify your local backend connection and try submitting again.
               </div>
             </div>
           )}
@@ -557,22 +577,22 @@ export const App: React.FC = () => {
           {!response && !isLoading && !error && (
             <div className="bg-white/90 dark:bg-slate-900/60 rounded-2xl p-12 border border-slate-200 dark:border-slate-800/80 text-center space-y-4 shadow-sm backdrop-blur-md">
               <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-slate-800 flex items-center justify-center mx-auto text-cyan-600 dark:text-cyan-400">
-                <RefreshCw className="w-7 h-7" />
+                <RefreshCw className="w-7 h-7" aria-hidden="true" />
               </div>
               <div className="space-y-1">
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">
                   Ready to Fix Your Device
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-sm mx-auto leading-relaxed">
-                  Select a benchmark case above or type your phone symptom to get grounded steps and native Settings shortcuts.
+                  Describe your device problem and get grounded troubleshooting steps with official Samsung Settings shortcuts.
                 </p>
               </div>
               <div className="flex items-center justify-center gap-4 text-[11px] text-slate-500 pt-2 font-medium">
                 <span className="flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Grounded Fixes
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /> Grounded Fixes
                 </span>
                 <span className="flex items-center gap-1">
-                  <Database className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" /> 578 Settings Links
+                  <Database className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" aria-hidden="true" /> 578 Settings Links
                 </span>
               </div>
             </div>
@@ -718,12 +738,12 @@ export const App: React.FC = () => {
             {
               step: "2",
               title: "Grounded Step Extraction",
-              desc: "We look up official Samsung support articles and organize the fix into steps.",
+              desc: "We look up official Samsung support knowledge and organize the fix into actionable steps.",
             },
             {
               step: "3",
-              title: "Direct Settings Links",
-              desc: "We match steps to native Samsung Settings screens so you can fix it with one tap.",
+              title: "Settings Shortcuts",
+              desc: "We match steps to official Samsung Settings entries so you can navigate directly to the right screen.",
             },
           ].map(({ step, title, desc }) => (
             <div
@@ -755,18 +775,23 @@ export const App: React.FC = () => {
             },
             {
               num: "02",
-              title: "Semantic LRU Cache",
-              desc: "Checks exact query hash and Jaccard paraphrase similarity (threshold 0.50) across 256-entry LRU cache.",
+              title: "LRU Response Cache",
+              desc: "Checks exact query hash and token Jaccard paraphrase similarity (threshold 0.50) across 256-entry LRU cache. Note: similarity uses token overlap, not embeddings.",
             },
             {
               num: "03",
               title: "Grounded Gemini Structured Generation",
-              desc: "Uses Gemini to extract diagnostic actions strictly from SIIS text. Zero URL leaks enforced.",
+              desc: "Uses Gemini to extract diagnostic actions strictly from SIIS text. Falls back to deterministic SIIS parser when API key is absent or quota exceeded.",
             },
             {
               num: "04",
               title: "TF-IDF Deeplink Matching",
-              desc: "Matches steps against official 578-entry Samsung catalog using TF-IDF cosine similarity (threshold 0.22).",
+              desc: "Matches steps against the official 578-entry Samsung catalog using TF-IDF cosine similarity with domain synonym expansion (threshold 0.22, empirically observed).",
+            },
+            {
+              num: "05",
+              title: "Validator & Safety Layer",
+              desc: "Every deeplink is verified against the official catalog. Weak matches are suppressed. bixby:// protocol URIs require a compatible Samsung Galaxy device to open.",
             },
           ].map(({ num, title, desc }) => (
             <div

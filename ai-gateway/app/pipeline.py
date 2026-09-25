@@ -25,6 +25,7 @@ from .models import (
     actionCategory,
 )
 from .retrieval import get_retriever
+from .validator import validate_and_repair_response
 
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
@@ -43,6 +44,85 @@ def _content_tokens(text: str) -> Set[str]:
     words = [w.lower() for w in re.findall(r"\w+", text)]
     filtered = {w for w in words if w not in STOPWORDS and len(w) > 1}
     return filtered if filtered else set(words)
+
+
+# Additional stopwords for topic derivation from SIIS titles
+_TITLE_STOPWORDS: Set[str] = {
+    "samsung", "galaxy", "phone", "tablet", "device", "on", "a", "an",
+    "the", "and", "or", "in", "of", "to", "for", "some", "things", "check",
+    "first", "how", "use", "your", "is", "are", "not", "with", "what",
+    "basics", "guide", "troubleshooting", "issue", "issues", "problem", "problems",
+}
+
+# Map common SIIS title keywords to clean topic names
+_TOPIC_MAP: dict = {
+    "wifi": "Wi-Fi", "wi-fi": "Wi-Fi", "bluetooth": "Bluetooth",
+    "battery": "Battery", "charging": "Charging", "camera": "Camera",
+    "display": "Display", "screen": "Screen", "fingerprint": "Fingerprint",
+    "audio": "Audio", "sound": "Sound", "speaker": "Speaker",
+    "email": "Email", "connectivity": "Connectivity", "network": "Network",
+    "storage": "Storage", "performance": "Performance", "payment": "Payment",
+    "location": "Location", "nfc": "NFC", "sim": "SIM", "call": "Calling",
+    "calls": "Calling", "app": "App", "apps": "Apps", "update": "Software",
+    "hotspot": "Hotspot", "mobile": "Mobile", "data": "Mobile Data",
+    "watch": "Galaxy Watch", "pay": "Samsung Pay", "memory": "Storage",
+    "overheating": "Overheating", "heat": "Overheating", "slow": "Performance",
+    "freeze": "Performance", "lagging": "Performance", "touch": "Touchscreen",
+    "mirroring": "Screen Mirroring", "biometric": "Biometrics",
+    "find": "Find My Mobile", "security": "Security",
+}
+
+
+def _derive_topic_name(siis_title: str) -> str:
+    """Derive a clean 2-3 word topic name from a SIIS article title.
+
+    Examples:
+        "Blank or black display on a Samsung phone or tablet" -> "Display"
+        "Wi-Fi connection issues on Samsung phone" -> "Wi-Fi Connection"
+        "Camera app not working on Samsung device" -> "Camera App"
+        "Battery draining quickly on Samsung phone" -> "Battery"
+    """
+    lower = siis_title.lower()
+
+    # Check direct keyword map first
+    for kw, name in _TOPIC_MAP.items():
+        if kw in lower.split() or f" {kw}" in lower or lower.startswith(kw):
+            return name
+
+    # Extract meaningful words, strip stopwords
+    words = [w for w in re.findall(r"[\w-]+", siis_title) if w.lower() not in _TITLE_STOPWORDS and len(w) > 2]
+    if not words:
+        words = re.findall(r"[\w-]+", siis_title)[:3]
+
+    # Title-case and take up to 2 words
+    titled = [w.capitalize() for w in words[:2]]
+    return " ".join(titled) if titled else "Device"
+
+
+def _derive_action_name(section_title: str) -> str:
+    """Derive a clean 2-3 word action name from a SIIS section header.
+
+    Examples:
+        "Step 1: Check Email Access on a PC" -> "Check Email"
+        "Force a Restart" -> "Force Restart"
+        "Troubleshooting Steps" -> "Diagnostic Steps"
+    """
+    # Remove step numbering and common prefixes
+    cleaned = re.sub(r"^(step\s+\d+[\.:]\s*|#{1,3}\s*)", "", section_title, flags=re.IGNORECASE).strip()
+    cleaned = _sanitize_no_urls(cleaned)
+
+    skip_words = {
+        "a", "an", "the", "and", "or", "in", "on", "at", "to", "for",
+        "of", "with", "your", "this", "my", "is", "using", "how"
+    }
+    words = [w for w in re.findall(r"[\w-]+", cleaned) if w.lower() not in skip_words]
+
+    if not words:
+        return "Diagnostic Step"
+
+    # Take up to 3 words, title-case
+    result_words = [w.capitalize() for w in words[:3]]
+    return " ".join(result_words)
 
 
 def _sanitize_no_urls(text: str) -> str:
@@ -207,6 +287,8 @@ async def generate_troubleshooting_with_timing(
 
     if api_key:
         gemini_called = True
+        # Derive a clean topic name from the SIIS title for the goal string
+        topic_hint = _derive_topic_name(request.siis_response.title)
         prompt = (
             "You are a Samsung Guided Troubleshooting AI engine.\n"
             f"User Complaint: {request.query}\n"
@@ -215,16 +297,20 @@ async def generate_troubleshooting_with_timing(
             "Task: Extract step-by-step diagnostic actions grounded strictly in the provided SIIS text.\n"
             "Rules:\n"
             "1. Ground all steps strictly in the SIIS text. Do NOT invent steps or external URLs.\n"
-            "2. Group steps into logical action groups.\n"
+            "2. Group steps into 2-5 logical action groups. Each group addresses one repair step.\n"
             "3. Assign category 'auto', 'manual', or 'critical' for each action.\n"
-            "4. Return strict JSON with format:\n"
+            f"4. The 'goal' field MUST be exactly: Follow these steps to perform this {topic_hint} Troubleshooting.\n"
+            f"5. The 'title' field MUST be exactly 2-3 words: {topic_hint}\n"
+            "6. Each actionName must be 2-3 words describing the action clearly (e.g. 'Check Display', 'Reset Network', 'Clear Cache').\n"
+            "7. Each description must be exactly 5-7 words starting with 'It will' (e.g. 'It will check display brightness settings.').\n"
+            "8. Return strict JSON only, no markdown:\n"
             "{\n"
-            '  "goal": "Follow these steps to perform troubleshooting",\n'
-            '  "title": "Article Short Title",\n'
+            f'  "goal": "Follow these steps to perform this {topic_hint} Troubleshooting.",\n'
+            f'  "title": "{topic_hint}",\n'
             '  "actions": [\n'
             "    {\n"
-            '      "actionName": "Action Name",\n'
-            '      "description": "Description of action",\n'
+            '      "actionName": "Check Display",\n'
+            '      "description": "It will check display refresh settings.",\n'
             '      "category": "manual",\n'
             '      "stepGroups": [\n'
             '        {"steps": ["Step 1...", "Step 2..."]}\n'
@@ -284,22 +370,25 @@ async def generate_troubleshooting_with_timing(
 
     if not raw_goal_data:
         extracted = _extract_steps_from_siis_content(request.siis_response.content)
+        topic_name = _derive_topic_name(request.siis_response.title)
         actions_list = []
         for sec_title, steps in extracted:
             chunks = [steps[i : i + 4] for i in range(0, len(steps), 4)]
             step_groups = [{"steps": chunk} for chunk in chunks if chunk]
+            # Generate a human-readable 2-3 word action name from the section title
+            clean_action_name = _derive_action_name(sec_title)
             actions_list.append(
                 {
-                    "actionName": _sanitize_no_urls(sec_title[:60]),
-                    "description": f"Perform {_sanitize_no_urls(sec_title)} to resolve issue.",
+                    "actionName": clean_action_name,
+                    "description": f"It will help resolve {topic_name.lower()} issue.",
                     "category": "manual",
                     "stepGroups": step_groups,
                 }
             )
 
         raw_goal_data = {
-            "goal": f"Follow these steps to resolve: {_sanitize_no_urls(request.siis_response.title)}",
-            "title": _sanitize_no_urls(request.siis_response.title),
+            "goal": f"Follow these steps to perform this {topic_name} Troubleshooting.",
+            "title": topic_name,
             "actions": actions_list,
         }
 
@@ -379,7 +468,7 @@ async def generate_troubleshooting_with_timing(
     raw_goal_text = _sanitize_no_urls(
         str(
             raw_goal_data.get(
-                "goal", f"Troubleshooting for {request.siis_response.title}"
+                "goal", f"Follow these steps to perform this {request.siis_response.title} Troubleshooting."
             )
         )
     )
@@ -395,6 +484,15 @@ async def generate_troubleshooting_with_timing(
     )
 
     response = ContextDeeplinkResponse(contexts=[goal_obj])
+
+    # Pass through authoritative validation & repair layer
+    response = validate_and_repair_response(
+        response,
+        official_uris,
+        query=request.query,
+        siis_title=request.siis_response.title,
+        siis_content=request.siis_response.content,
+    )
 
     # Cache the validated response
     if use_cache:

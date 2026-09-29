@@ -139,7 +139,7 @@ def _sanitize_no_urls(text: str) -> str:
 class TroubleshootingCache:
     """In-memory cache supporting exact query match and paraphrased query retrieval.
 
-    Identifies entries using (siis_title, content_sha256).
+    Identifies entries using (siis_title, content_sha256) and normalized query strings.
     For paraphrase matching: computes content-word Jaccard similarity across token sets.
     Threshold for paraphrase hit: 0.50 within identical SIIS knowledge context.
     """
@@ -147,19 +147,34 @@ class TroubleshootingCache:
     def __init__(self, max_size: int = 256):
         self.max_size = max_size
         self._exact_store: Dict[str, Tuple[ContextDeeplinkResponse, float]] = {}
+        self._query_store: Dict[str, Tuple[ContextDeeplinkResponse, float]] = {}
         self._entries: List[Dict[str, Any]] = []
 
     def _hash_siis(self, content: str) -> str:
         return hashlib.sha256(content.encode("utf-8")).hexdigest()[:16]
 
+    def _norm_query(self, query: str) -> str:
+        return " ".join(re.findall(r"\w+", query.lower()))
+
     def _exact_key(self, query: str, title: str, siis_hash: str) -> str:
-        norm_q = " ".join(re.findall(r"\w+", query.lower()))
+        norm_q = self._norm_query(query)
         return f"{title}|{siis_hash}|{norm_q}"
+
+    def get_by_query(self, query: str) -> Optional[Tuple[ContextDeeplinkResponse, str, float]]:
+        norm_q = self._norm_query(query)
+        if norm_q in self._query_store:
+            resp, _ = self._query_store[norm_q]
+            return resp, "exact", 1.0
+        return None
 
     def get(
         self, query: str, title: str, content: str
     ) -> Optional[Tuple[ContextDeeplinkResponse, str, float]]:
         """Lookup cache. Returns (response, hit_type, similarity) or None."""
+        norm_hit = self.get_by_query(query)
+        if norm_hit:
+            return norm_hit
+
         siis_hash = self._hash_siis(content)
         key = self._exact_key(query, title, siis_hash)
         if key in self._exact_store:
@@ -194,7 +209,10 @@ class TroubleshootingCache:
     ) -> None:
         siis_hash = self._hash_siis(content)
         key = self._exact_key(query, title, siis_hash)
+        norm_q = self._norm_query(query)
+
         self._exact_store[key] = (response, time.time())
+        self._query_store[norm_q] = (response, time.time())
 
         tokens = _content_tokens(query)
         self._entries.append(
@@ -214,6 +232,7 @@ class TroubleshootingCache:
 
     def clear(self) -> None:
         self._exact_store.clear()
+        self._query_store.clear()
         self._entries.clear()
 
 
@@ -262,6 +281,22 @@ async def generate_troubleshooting_with_timing(
 ) -> Tuple[ContextDeeplinkResponse, float, float, Dict[str, Any]]:
     """Execute grounded pipeline and return (response, local_pipeline_latency_ms, gemini_api_latency_ms, execution_meta)."""
     local_start = time.time()
+
+    cache = get_cache()
+    if use_cache:
+        cached = cache.get_by_query(request.query)
+        if cached:
+            cached_resp, hit_type, hit_score = cached
+            lookup_lat = round((time.time() - local_start) * 1000, 2)
+            meta = {
+                "cache_hit": True,
+                "cache_type": hit_type,
+                "cache_similarity": hit_score,
+                "gemini_called": False,
+                "gemini_succeeded": False,
+                "deterministic_fallback_used": False,
+            }
+            return cached_resp, lookup_lat, 0.0, meta
 
     # Normal mode SIIS article resolution if not explicitly provided in request
     if (

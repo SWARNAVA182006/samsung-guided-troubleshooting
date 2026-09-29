@@ -9,15 +9,15 @@
   "valid_schema_cases": 20,
   "schema_pass_rate_pct": 100.0,
   "official_catalog_membership_pct": 100.0,
-  "gemini_generation_success_count": 1,
-  "deterministic_fallback_count": 19,
-  "total_actions_generated": 123,
-  "total_step_groups_generated": 149,
-  "total_steps_generated": 355,
+  "gemini_generation_success_count": 0,
+  "deterministic_fallback_count": 20,
+  "total_actions_generated": 124,
+  "total_step_groups_generated": 151,
+  "total_steps_generated": 357,
   "deeplink_breakdown": {
     "catalog_size": 997,
-    "total_actionable_deeplinks_generated": 144,
-    "catalog_backed_count": 144,
+    "total_actionable_deeplinks_generated": 146,
+    "catalog_backed_count": 146,
     "dummy_fallback_count": 0,
     "invalid_uri_count": 0,
     "note": "catalog_backed_count = URIs verified in official 578-entry catalog. dummy_fallback_count = bixby://dummy_positive (official contract fallback, NOT a catalog entry). invalid_uri_count should always be 0.",
@@ -25,28 +25,28 @@
   },
   "url_leak_audit": {
     "cases_scanned": 20,
-    "fields_scanned": 841,
+    "fields_scanned": 850,
     "leaks_found": 0,
     "leak_details": [],
     "measurement": "MEASURED \u2014 scanned all text fields in all 20 generated responses"
   },
   "latency_metrics": {
-    "average_local_pipeline_latency_ms": 2819.69,
-    "average_gemini_api_latency_ms": 2791.26,
-    "total_evaluation_runtime_sec": 56.41,
+    "average_local_pipeline_latency_ms": 1681.37,
+    "average_gemini_api_latency_ms": 1660.54,
+    "total_evaluation_runtime_sec": 33.64,
     "measurement": "MEASURED via time.perf_counter()",
     "note": "Local pipeline latency reflects deterministic TF-IDF path. Gemini latency is 0.0 ms when key is absent (no API call made)."
   },
   "cache_evaluation": {
     "measurement_method": "time.perf_counter()",
-    "cache_miss_latency_ms": 1479.77,
-    "cache_miss_wall_ms": 1479.9,
+    "cache_miss_latency_ms": 1409.97,
+    "cache_miss_wall_ms": 1407.71,
     "exact_repeat_latency_ms": 0.0,
-    "exact_repeat_wall_ms": 0.06,
+    "exact_repeat_wall_ms": 0.02,
     "exact_repeat_cache_hit": true,
     "exact_speedup_factor": "N/A",
     "paraphrase_latency_ms": 0.0,
-    "paraphrase_wall_ms": 0.1,
+    "paraphrase_wall_ms": 0.07,
     "paraphrase_cache_hit": true,
     "paraphrase_similarity": 0.7895,
     "similarity_method": "Token Jaccard (NOT embedding-based semantics)"
@@ -185,30 +185,30 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 4432.94,
-      "gemini_api_latency_ms": 4375.94,
-      "total_case_latency_ms": 4433.47
+      "local_pipeline_latency_ms": 1680.26,
+      "gemini_api_latency_ms": 1640.09,
+      "total_case_latency_ms": 1680.1
     },
     {
       "id": "row_2",
       "title": "Blank or black display on a Samsung phone or table",
       "schema_valid": true,
       "gemini_called": true,
-      "gemini_succeeded": true,
-      "deterministic_fallback_used": false,
-      "computed_score": 0.3998,
-      "actions_count": 4,
-      "step_groups_count": 4,
-      "steps_count": 11,
-      "actionable_deeplinks": 4,
-      "catalog_backed_deeplinks": 4,
+      "gemini_succeeded": false,
+      "deterministic_fallback_used": true,
+      "computed_score": 0.3358,
+      "actions_count": 5,
+      "step_groups_count": 6,
+      "steps_count": 13,
+      "actionable_deeplinks": 6,
+      "catalog_backed_deeplinks": 6,
       "dummy_fallback_deeplinks": 0,
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 18557.01,
-      "gemini_api_latency_ms": 18545.07,
-      "total_case_latency_ms": 18557.71
+      "local_pipeline_latency_ms": 1529.96,
+      "gemini_api_latency_ms": 1514.39,
+      "total_case_latency_ms": 1524.14
     },
     {
       "id": "row_3",
@@ -227,9 +227,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 7382.69,
-      "gemini_api_latency_ms": 7361.18,
-      "total_case_latency_ms": 7383.51
+      "local_pipeline_latency_ms": 2408.8,
+      "gemini_api_latency_ms": 2389.99,
+      "total_case_latency_ms": 2408.56
     },
     {
       "id": "row_4",
@@ -248,9 +248,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1491.12,
-      "gemini_api_latency_ms": 1464.84,
-      "total_case_latency_ms": 1489.82
+      "local_pipeline_latency_ms": 2051.0,
+      "gemini_api_latency_ms": 2032.9,
+      "total_case_latency_ms": 2052.1
     },
     {
       "id": "row_5",
@@ -269,9 +269,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1462.37,
-      "gemini_api_latency_ms": 1451.93,
-      "total_case_latency_ms": 1462.97
+      "local_pipeline_latency_ms": 1828.04,
+      "gemini_api_latency_ms": 1823.74,
+      "total_case_latency_ms": 1832.92
     },
     {
       "id": "row_7",
@@ -290,9 +290,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1502.69,
-      "gemini_api_latency_ms": 1444.06,
-      "total_case_latency_ms": 1503.33
+      "local_pipeline_latency_ms": 1882.01,
+      "gemini_api_latency_ms": 1829.23,
+      "total_case_latency_ms": 1882.81
     },
     {
       "id": "row_8",
@@ -311,9 +311,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1486.75,
-      "gemini_api_latency_ms": 1419.84,
-      "total_case_latency_ms": 1486.06
+      "local_pipeline_latency_ms": 1598.24,
+      "gemini_api_latency_ms": 1542.34,
+      "total_case_latency_ms": 1597.09
     },
     {
       "id": "row_9",
@@ -332,9 +332,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1440.08,
-      "gemini_api_latency_ms": 1423.58,
-      "total_case_latency_ms": 1440.83
+      "local_pipeline_latency_ms": 1496.61,
+      "gemini_api_latency_ms": 1486.0,
+      "total_case_latency_ms": 1495.91
     },
     {
       "id": "row_10",
@@ -353,9 +353,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1480.0,
-      "gemini_api_latency_ms": 1466.44,
-      "total_case_latency_ms": 1480.22
+      "local_pipeline_latency_ms": 1370.83,
+      "gemini_api_latency_ms": 1364.98,
+      "total_case_latency_ms": 1372.05
     },
     {
       "id": "row_11",
@@ -374,9 +374,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1489.42,
-      "gemini_api_latency_ms": 1477.04,
-      "total_case_latency_ms": 1489.61
+      "local_pipeline_latency_ms": 1381.79,
+      "gemini_api_latency_ms": 1369.02,
+      "total_case_latency_ms": 1382.69
     },
     {
       "id": "row_12",
@@ -395,9 +395,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1428.62,
-      "gemini_api_latency_ms": 1374.65,
-      "total_case_latency_ms": 1429.46
+      "local_pipeline_latency_ms": 1568.91,
+      "gemini_api_latency_ms": 1539.44,
+      "total_case_latency_ms": 1568.04
     },
     {
       "id": "row_13",
@@ -416,9 +416,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1404.48,
-      "gemini_api_latency_ms": 1381.97,
-      "total_case_latency_ms": 1404.97
+      "local_pipeline_latency_ms": 1763.89,
+      "gemini_api_latency_ms": 1745.39,
+      "total_case_latency_ms": 1763.15
     },
     {
       "id": "row_14",
@@ -437,9 +437,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1828.29,
-      "gemini_api_latency_ms": 1813.8,
-      "total_case_latency_ms": 1828.46
+      "local_pipeline_latency_ms": 1801.96,
+      "gemini_api_latency_ms": 1790.29,
+      "total_case_latency_ms": 1803.83
     },
     {
       "id": "row_15",
@@ -458,9 +458,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1890.91,
-      "gemini_api_latency_ms": 1874.92,
-      "total_case_latency_ms": 1890.39
+      "local_pipeline_latency_ms": 1472.73,
+      "gemini_api_latency_ms": 1458.49,
+      "total_case_latency_ms": 1470.99
     },
     {
       "id": "row_16",
@@ -479,9 +479,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1747.77,
-      "gemini_api_latency_ms": 1722.43,
-      "total_case_latency_ms": 1747.76
+      "local_pipeline_latency_ms": 1679.04,
+      "gemini_api_latency_ms": 1664.56,
+      "total_case_latency_ms": 1682.07
     },
     {
       "id": "row_17",
@@ -500,9 +500,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1528.0,
-      "gemini_api_latency_ms": 1503.53,
-      "total_case_latency_ms": 1527.6
+      "local_pipeline_latency_ms": 1776.83,
+      "gemini_api_latency_ms": 1754.22,
+      "total_case_latency_ms": 1773.25
     },
     {
       "id": "row_19",
@@ -521,9 +521,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1424.78,
-      "gemini_api_latency_ms": 1402.54,
-      "total_case_latency_ms": 1424.93
+      "local_pipeline_latency_ms": 1905.17,
+      "gemini_api_latency_ms": 1891.38,
+      "total_case_latency_ms": 1906.2
     },
     {
       "id": "row_20",
@@ -542,9 +542,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1426.11,
-      "gemini_api_latency_ms": 1401.51,
-      "total_case_latency_ms": 1426.67
+      "local_pipeline_latency_ms": 1470.23,
+      "gemini_api_latency_ms": 1449.5,
+      "total_case_latency_ms": 1468.71
     },
     {
       "id": "row_21",
@@ -563,9 +563,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1468.18,
-      "gemini_api_latency_ms": 1426.65,
-      "total_case_latency_ms": 1467.63
+      "local_pipeline_latency_ms": 1479.85,
+      "gemini_api_latency_ms": 1461.55,
+      "total_case_latency_ms": 1479.97
     },
     {
       "id": "row_22",
@@ -584,9 +584,9 @@
       "invalid_deeplinks": 0,
       "validation_deeplinks": 0,
       "deeplinks_in_official_catalog": true,
-      "local_pipeline_latency_ms": 1521.63,
-      "gemini_api_latency_ms": 1493.25,
-      "total_case_latency_ms": 1521.81
+      "local_pipeline_latency_ms": 1481.25,
+      "gemini_api_latency_ms": 1463.26,
+      "total_case_latency_ms": 1486.68
     }
   ]
 }

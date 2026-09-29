@@ -1,0 +1,63 @@
+================================================================================
+SAMSUNG GUIDED TROUBLESHOOTING ENGINE - ARCHITECTURE OVERVIEW
+================================================================================
+
++------------------------------------------------------------------------------+
+|                         CLIENT LAYER (React + TypeScript)                    |
+|  • Port: 5173 (Vite Dev Server)                                              |
+|  • Components: HomeScreen, TroubleshootForm, ResultsDisplay, TopHeader       |
+|  • Features: Overview Mode, Step-by-Step Mode, Apple Glass UI, Desktop Bixby  |
++------------------------------------------------------------------------------+
+                                       |
+                                       | POST /api/troubleshoot
+                                       v
++------------------------------------------------------------------------------+
+|                         APPLICATION BACKEND LAYER (Fastify Node.js)          |
+|  • Port: 3000 (ts-node)                                                      |
+|  • Endpoints: GET /api/health, POST /api/troubleshoot                        |
+|  • Feature: In-Memory Fast Response Cache (TTL 1 hour, <= 10ms warm latency)  |
++------------------------------------------------------------------------------+
+                                       |
+                                       | POST /internal/troubleshoot
+                                       v
++------------------------------------------------------------------------------+
+|                         AI GATEWAY MICROSERVICE LAYER (Python FastAPI)       |
+|  • Port: 8001 (uvicorn)                                                      |
+|  • Endpoints: GET /health, POST /internal/troubleshoot                       |
+|                                                                              |
+|  [ In-Memory Troubleshooting Cache ]                                         |
+|    - Query-level fast path + SHA-256 content hash + token Jaccard            |
+|                                                                              |
+|  [ Grounded Step Extractor Engine ]                                          |
+|    - Gemini 2.5 Flash API (when GEMINI_API_KEY is configured)                |
+|    - Deterministic SIIS Regex Parser (fallback mode when key is absent)      |
+|                                                                              |
+|  [ TF-IDF Deeplink Retriever Engine ]                                        |
+|    - Custom pure-Python TF-IDF cosine similarity against 578 catalog entries |
+|    - Domain synonym query expansion map (_DOMAIN_EXPANSIONS)                 |
+|    - Score threshold filtering (0.22)                                        |
+|                                                                              |
+|  [ Authoritative Validation & Repair Layer ]                                 |
+|    - Enforces 100% catalog URI membership against data/deeplinks.json         |
+|    - URL leak sanitizer (strips http://, https://, www.)                     |
++------------------------------------------------------------------------------+
+                                       |
+                                       v
++------------------------------------------------------------------------------+
+|                         IMMUTABLE KNOWLEDGE LAYER (data/)                    |
+|  • data/deeplinks.json      (578 Official Samsung Deeplink URIs)            |
+|  • data/siis_responses.json (20 Official Benchmark SIIS Test Cases)          |
+|  • data/schema.py           (Official Pydantic Contract)                     |
++------------------------------------------------------------------------------+
+
+================================================================================
+DATA FLOW & EXECUTION PIPELINE
+================================================================================
+1. User enters natural language complaint on React Frontend.
+2. Fastify Node Backend checks in-memory response cache. If hit, returns in <10ms.
+3. If miss, request is proxied to Python AI Gateway.
+4. AI Gateway resolves SIIS article from data/siis_responses.json via TF-IDF if unprovided.
+5. Grounded Extractor parses article into logical action groups & repair steps.
+6. Deeplink Retriever queries 578-entry catalog to attach actionable & validation URIs.
+7. Validator verifies 100% URI catalog membership & strips external URL leaks.
+8. Validated ContextDeeplinkResponse returned to Frontend for interactive rendering.

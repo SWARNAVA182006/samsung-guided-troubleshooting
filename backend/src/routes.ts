@@ -7,8 +7,11 @@ interface SIISPayload {
 
 interface TroubleshootRequestBody {
   query: string;
-  siis_response: SIISPayload;
+  siis_response?: SIISPayload;
 }
+
+const responseCache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour TTL
 
 export async function registerRoutes(app: FastifyInstance): Promise<void> {
   app.get("/api/health", async (_req: FastifyRequest, reply: FastifyReply) => {
@@ -37,6 +40,16 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       });
     }
 
+    const cacheKey = siis_response
+      ? `${query.trim().toLowerCase()}|${siis_response.title}`
+      : query.trim().toLowerCase();
+
+    const cached = responseCache.get(cacheKey);
+    console.log(`[NODE CACHE DEBUG] key='${cacheKey}' hit=${!!cached} size=${responseCache.size}`);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      return reply.status(200).send(cached.data);
+    }
+
     const aiGatewayUrl = process.env.AI_GATEWAY_URL || "http://127.0.0.1:8001";
     const targetEndpoint = `${aiGatewayUrl}/internal/troubleshoot`;
 
@@ -62,6 +75,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       }
 
       const data = await aiResponse.json();
+      responseCache.set(cacheKey, { data, timestamp: Date.now() });
       return reply.status(200).send(data);
     } catch (err: any) {
       if (err.name === "AbortError") {

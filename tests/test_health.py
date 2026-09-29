@@ -50,10 +50,13 @@ def test_troubleshoot_missing_query_returns_422() -> None:
     assert response.status_code == 422
 
 
-def test_troubleshoot_missing_siis_response_returns_422() -> None:
-    """Verify request missing required 'siis_response' object is rejected with 422."""
+def test_troubleshoot_missing_siis_response_auto_retrieves() -> None:
+    """Verify normal mode request with missing 'siis_response' auto-retrieves SIIS article and returns 200."""
     response = client.post("/v1/troubleshoot", json={"query": "Device screen is black"})
-    assert response.status_code == 422
+    assert response.status_code == 200
+    data = response.json()
+    assert "contexts" in data
+    assert len(data["contexts"]) > 0
 
 
 def test_troubleshoot_invalid_permissive_structures_rejected_with_422() -> None:

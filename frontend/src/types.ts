@@ -47,7 +47,7 @@ export interface SIISPayload {
 
 export interface TroubleshootRequest {
   query: string;
-  siis_response: SIISPayload;
+  siis_response?: SIISPayload;
 }
 
 export type NavigationTab = "home" | "troubleshoot" | "history" | "how-it-works" | "settings";

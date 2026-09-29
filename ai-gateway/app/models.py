@@ -79,4 +79,4 @@ class SIISResponsePayload(BaseModel):
 class TroubleshootRequest(BaseModel):
     """Strict Theme 2 API request contract for POST /v1/troubleshoot."""
     query: str
-    siis_response: SIISResponsePayload
+    siis_response: Optional[SIISResponsePayload] = None

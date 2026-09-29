@@ -26,14 +26,14 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     }
 
     if (
-      !siis_response ||
-      typeof siis_response !== "object" ||
-      !siis_response.title ||
-      !siis_response.content
+      siis_response &&
+      (typeof siis_response !== "object" ||
+        !siis_response.title ||
+        !siis_response.content)
     ) {
       return reply.status(422).send({
         error: "Unprocessable Entity",
-        message: "Request must contain a valid 'siis_response' object with 'title' and 'content'.",
+        message: "If 'siis_response' is provided, it must be an object with 'title' and 'content'.",
       });
     }
 

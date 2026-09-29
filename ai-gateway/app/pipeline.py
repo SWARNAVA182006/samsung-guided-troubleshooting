@@ -19,12 +19,14 @@ else:
 from .models import (
     Action,
     ContextDeeplinkResponse,
+    Deeplink,
     Goal,
+    SIISResponsePayload,
     StepGroup,
     TroubleshootRequest,
     actionCategory,
 )
-from .retrieval import get_retriever
+from .retrieval import get_retriever, get_siis_retriever
 from .validator import validate_and_repair_response
 
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
@@ -260,6 +262,68 @@ async def generate_troubleshooting_with_timing(
 ) -> Tuple[ContextDeeplinkResponse, float, float, Dict[str, Any]]:
     """Execute grounded pipeline and return (response, local_pipeline_latency_ms, gemini_api_latency_ms, execution_meta)."""
     local_start = time.time()
+
+    # Normal mode SIIS article resolution if not explicitly provided in request
+    if (
+        not request.siis_response
+        or not request.siis_response.content
+        or request.siis_response.title in ("Troubleshooting Guide", "")
+        or request.siis_response.content.strip() == request.query.strip()
+    ):
+        siis_match = get_siis_retriever().search_article(request.query, threshold=0.15)
+        if siis_match:
+            request.siis_response, _match_score = siis_match
+        else:
+            clarification_resp = ContextDeeplinkResponse(
+                contexts=[
+                    Goal(
+                        goal="Follow these steps to perform this Device Clarification Troubleshooting.",
+                        title="Device Clarification",
+                        score=0.10,
+                        actions=[
+                            Action(
+                                actionName="Provide Details",
+                                description="It will help identify your exact issue.",
+                                category=actionCategory.manual,
+                                stepGroups=[
+                                    StepGroup(
+                                        steps=[
+                                            "We need a little more detail to recommend the right fix for your Samsung device.",
+                                            "Please specify if your issue relates to screen display, Wi-Fi connectivity, battery draining, camera app, or bluetooth pairing.",
+                                            "Describe any specific error message or visual symptoms appearing on your screen.",
+                                        ],
+                                        actionableDeeplink=Deeplink(
+                                            deeplink="bixby://settings/main",
+                                            description="Open Samsung Settings to check your device status.",
+                                            message="Open Settings",
+                                        ),
+                                    )
+                                ],
+                            )
+                        ],
+                    )
+                ]
+            )
+            official_uris = {item.get("deeplink") for item in get_retriever().catalog if item.get("deeplink")}
+            clarification_resp = validate_and_repair_response(
+                clarification_resp,
+                official_uris,
+                query=request.query,
+                siis_title="Device Clarification",
+                siis_content="Clarification requested for user query.",
+            )
+            lat = round((time.time() - local_start) * 1000, 2)
+            meta = {
+                "cache_hit": False,
+                "cache_type": "miss",
+                "cache_similarity": 0.0,
+                "gemini_called": False,
+                "gemini_succeeded": False,
+                "deterministic_fallback_used": True,
+                "clarification_requested": True,
+            }
+            return clarification_resp, lat, 0.0, meta
+
     cache = get_cache()
 
     if use_cache:

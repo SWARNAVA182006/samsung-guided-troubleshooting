@@ -40,22 +40,16 @@ build/
 *.egg-info/
 *.egg
 
-# ML Models and Vector DB Cache
+# ML Models and Vector DB Runtime Storage
 models/
 hf_cache/
 qdrant_storage/
+
+# Node
+node_modules/
 
 # Operating System Files
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 .DS_Store
-
-node_modules/
-dist/
-__pycache__/
-*.pyc
-.venv/
-.env
-.env.*
-!.env.example

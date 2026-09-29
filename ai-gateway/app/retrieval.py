@@ -201,7 +201,77 @@ class DeeplinkRetriever:
         return None
 
 
+from .data_loader import load_deeplinks, load_siis_responses
+from .models import Deeplink, SIISResponsePayload, ValidationDeepLink
+
+
+class SIISArticleRetriever:
+    """TF-IDF cosine similarity index over the 20 official Samsung SIIS articles in data/siis_responses.json.
+
+    Used in normal user mode when no benchmark SIIS article payload is explicitly provided.
+    Retrieves the most relevant official SIIS article for a raw user complaint.
+    """
+
+    def __init__(self, data_dir: Optional[Any] = None):
+        raw_siis = load_siis_responses(data_dir)
+        self.responses: List[Dict[str, Any]] = raw_siis.get("responses", [])
+        self.doc_texts: List[str] = []
+        for r in self.responses:
+            siis_data = r.get("siis_response", {})
+            title = siis_data.get("title", "")
+            orig_q = r.get("original_query", "")
+            content = siis_data.get("content", "")
+            combined = f"{title} {orig_q} {content}"
+            self.doc_texts.append(combined)
+
+        self.vectors, self.idf = _compute_tf_idf_vectors(self.doc_texts)
+
+    def search_article(
+        self, query: str, threshold: float = 0.15
+    ) -> Optional[Tuple[SIISResponsePayload, float]]:
+        base_tokens = _tokenize(query)
+        if not base_tokens:
+            return None
+
+        expanded_tokens = _expand_query_tokens(base_tokens)
+        q_tf: Dict[str, int] = {}
+        for t in expanded_tokens:
+            q_tf[t] = q_tf.get(t, 0) + 1
+
+        q_vec: Dict[str, float] = {}
+        norm_sq = 0.0
+        for t, count in q_tf.items():
+            val = count * self.idf.get(t, 1.0)
+            q_vec[t] = val
+            norm_sq += val * val
+        norm = math.sqrt(norm_sq) if norm_sq > 0 else 1.0
+        q_norm_vec = {t: v / norm for t, v in q_vec.items()}
+
+        best_score = 0.0
+        best_index = -1
+
+        for idx, doc_vec in enumerate(self.vectors):
+            score = 0.0
+            for t, val in q_norm_vec.items():
+                if t in doc_vec:
+                    score += val * doc_vec[t]
+            if score > best_score:
+                best_score = score
+                best_index = idx
+
+        if best_index >= 0 and best_score >= threshold:
+            raw_siis = self.responses[best_index].get("siis_response", {})
+            payload = SIISResponsePayload(
+                title=raw_siis.get("title", "Official Samsung Support Guide"),
+                content=raw_siis.get("content", ""),
+            )
+            return payload, round(best_score, 4)
+
+        return None
+
+
 _retriever: Optional[DeeplinkRetriever] = None
+_siis_retriever: Optional[SIISArticleRetriever] = None
 
 
 def get_retriever() -> DeeplinkRetriever:
@@ -209,3 +279,10 @@ def get_retriever() -> DeeplinkRetriever:
     if _retriever is None:
         _retriever = DeeplinkRetriever()
     return _retriever
+
+
+def get_siis_retriever() -> SIISArticleRetriever:
+    global _siis_retriever
+    if _siis_retriever is None:
+        _siis_retriever = SIISArticleRetriever()
+    return _siis_retriever

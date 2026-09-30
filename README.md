@@ -10,6 +10,24 @@
 
 ---
 
+## 📦 Submission & Quick Access
+
+**Team:** InnoVerse  
+**Institute:** SRM Institute of Science and Technology (SRMIST)  
+**Theme:** Theme 02 — Guided Troubleshooting
+
+| Resource | Link |
+|---|---|
+| 🎥 **Demo Video** | **[▶ Watch on Google Drive](https://drive.google.com/file/d/1TwWykxGNnVJEitRnajxDy2_izLY_SLDM/view?usp=sharing)** |
+| 📝 **Official Samsung PRISM Submission Form** | **[📋 Open Submission Form](https://docs.google.com/forms/d/e/1FAIpQLSd_WWF7mnEVUWV3eC-Ptc2PKeJ5Mt_422EknsfShKo_l1y3Og/viewform)** |
+| 📊 **Presentation PPTX** | [SRMIST_InnoVerse_Presentation.pptx](./submission/SRMIST_InnoVerse_Presentation.pptx) |
+| 📄 **Presentation PDF** | [SRMIST_InnoVerse_Presentation.pdf](./submission/SRMIST_InnoVerse_Presentation.pdf) |
+| 🤖 **AI Usage Disclosure Form** | [InnoVerse_AI_Usage_Disclosure_Form.docx](./submission/InnoVerse_AI_Usage_Disclosure_Form.docx) |
+
+> **Recommended evaluation:** Start with `START_GUIDE.md` to run the prototype, then review the demo video and presentation for the complete product experience.
+
+---
+
 ## 🚀 Judge Quick Start
 
 For full, zero-config, copy-paste setup instructions designed specifically for fresh-clone evaluation, see:

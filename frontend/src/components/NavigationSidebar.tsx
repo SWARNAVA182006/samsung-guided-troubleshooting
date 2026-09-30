@@ -29,22 +29,54 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const navItems = [
-    { id: "home" as NavigationTab, label: "Home", icon: Home },
-    { id: "troubleshoot" as NavigationTab, label: "Troubleshoot", icon: Wrench, badge: "One UI" },
-    { id: "history" as NavigationTab, label: "Saved Sessions", icon: History, count: historyCount },
-    { id: "how-it-works" as NavigationTab, label: "How It Works", icon: BookOpen },
-    { id: "settings" as NavigationTab, label: "Settings", icon: Settings },
+    {
+      id: "home" as NavigationTab,
+      label: "Home",
+      icon: Home,
+      iconColor: "text-blue-600 dark:text-blue-400",
+      pillBg: "bg-blue-500/12 dark:bg-blue-500/20 border-blue-500/25",
+    },
+    {
+      id: "troubleshoot" as NavigationTab,
+      label: "Troubleshoot",
+      icon: Wrench,
+      badge: "One UI",
+      iconColor: "text-cyan-600 dark:text-cyan-400",
+      pillBg: "bg-cyan-500/12 dark:bg-cyan-500/20 border-cyan-500/25",
+    },
+    {
+      id: "history" as NavigationTab,
+      label: "Saved Sessions",
+      icon: History,
+      count: historyCount,
+      iconColor: "text-violet-600 dark:text-violet-400",
+      pillBg: "bg-violet-500/12 dark:bg-violet-500/20 border-violet-500/25",
+    },
+    {
+      id: "how-it-works" as NavigationTab,
+      label: "How It Works",
+      icon: BookOpen,
+      iconColor: "text-emerald-600 dark:text-emerald-400",
+      pillBg: "bg-emerald-500/12 dark:bg-emerald-500/20 border-emerald-500/25",
+    },
+    {
+      id: "settings" as NavigationTab,
+      label: "Settings",
+      icon: Settings,
+      iconColor: "text-amber-600 dark:text-amber-400",
+      pillBg: "bg-amber-500/12 dark:bg-amber-500/20 border-amber-500/25",
+    },
   ];
 
   return (
     <aside
-      className={`relative flex-shrink-0 flex flex-col glass-panel border-r border-slate-200/70 dark:border-white/8 h-full select-none sidebar-slide ${
+      className={`relative flex-shrink-0 flex flex-col glass-panel border-r border-slate-200/70 dark:border-white/10 h-full select-none sidebar-slide ${
         isCollapsed ? "w-[68px]" : "w-[240px]"
       }`}
       aria-label="Main Navigation"
     >
       {/* ── LOGO HEADER ─────────────────────────────────────────────── */}
-      <div className="flex flex-col gap-2 px-3 pt-4 pb-3 border-b border-slate-200/60 dark:border-white/8">
+      <div className="flex flex-col gap-2 px-3 pt-4 pb-3 border-b border-slate-200/60 dark:border-white/10">
         {/* Logo row */}
         <div className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"}`}>
           <Logo size="sm" showText={false} />
@@ -53,10 +85,10 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
               <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400 leading-none">
                 Samsung Assistant
               </span>
-              <span className="text-[12px] font-extrabold text-slate-900 dark:text-white leading-tight mt-0.5 truncate">
+              <span className="text-[13px] font-extrabold text-slate-900 dark:text-white leading-tight mt-0.5 truncate">
                 Guided Troubleshooting
               </span>
-              <span className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5 font-medium">
+              <span className="text-[9.5px] text-slate-600 dark:text-slate-300 mt-0.5 font-medium">
                 PRISM 3.0 · AI Engine
               </span>
             </div>
@@ -66,7 +98,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
         {/* Collapse toggle — always on its own row, centred */}
         <button
           onClick={() => setIsCollapsed((prev) => !prev)}
-          className={`flex items-center gap-1.5 self-stretch justify-center py-1.5 px-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-white/8 border border-slate-200/60 dark:border-white/8 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 btn-interactive text-[10px] font-semibold`}
+          className={`flex items-center gap-1.5 self-stretch justify-center py-1.5 px-2 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 btn-interactive text-[10px] font-semibold`}
           title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
@@ -82,7 +114,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
       </div>
 
       {/* ── NAV ITEMS ───────────────────────────────────────────────── */}
-      <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-1" aria-label="Sidebar Menu">
+      <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-1.5" aria-label="Sidebar Menu">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -93,11 +125,11 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
               onClick={() => onTabChange(item.id)}
               title={isCollapsed ? item.label : undefined}
               className={`w-full flex items-center rounded-xl text-left transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-cyan-500/40 btn-interactive ${
-                isCollapsed ? "justify-center p-3" : "justify-between px-3 py-2.5"
+                isCollapsed ? "justify-center p-2.5" : "justify-between px-3 py-2.5"
               } ${
                 isActive
-                  ? "bg-blue-600/12 dark:bg-blue-500/20 border border-blue-300/70 dark:border-blue-400/30 shadow-sm"
-                  : "border border-transparent hover:bg-slate-100/80 dark:hover:bg-white/6"
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md shadow-blue-500/25 border border-blue-500/40"
+                  : "border border-transparent hover:bg-slate-100/90 dark:hover:bg-white/10 hover:border-slate-200/70 dark:hover:border-white/10"
               }`}
               aria-current={isActive ? "page" : undefined}
             >
@@ -106,15 +138,13 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                 <div
                   className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
                     isActive
-                      ? "bg-blue-600 shadow-sm shadow-blue-500/30"
-                      : "bg-slate-100/80 dark:bg-white/8 group-hover:bg-slate-200/80 dark:group-hover:bg-white/12"
+                      ? "bg-white/20 border border-white/30 text-white shadow-sm"
+                      : `border ${item.pillBg} ${item.iconColor} group-hover:scale-105`
                   }`}
                 >
                   <Icon
                     className={`w-3.5 h-3.5 ${
-                      isActive
-                        ? "text-white"
-                        : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"
+                      isActive ? "text-white" : item.iconColor
                     }`}
                   />
                 </div>
@@ -123,8 +153,8 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                   <span
                     className={`text-[12px] font-bold leading-none truncate ${
                       isActive
-                        ? "text-slate-900 dark:text-white"
-                        : "text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white"
+                        ? "text-white"
+                        : "text-slate-800 dark:text-slate-100 group-hover:text-slate-900 dark:group-hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -135,17 +165,29 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
               {!isCollapsed && (
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   {"badge" in item && item.badge && (
-                    <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold tracking-wide uppercase bg-cyan-500/12 dark:bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/25 shimmer-badge">
+                    <span
+                      className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold tracking-wide uppercase transition-colors ${
+                        isActive
+                          ? "bg-white/25 text-white border border-white/30"
+                          : "bg-cyan-500/12 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 shimmer-badge"
+                      }`}
+                    >
                       {item.badge}
                     </span>
                   )}
                   {"count" in item && typeof item.count === "number" && item.count > 0 && (
-                    <span className="min-w-[20px] px-1.5 py-0.5 rounded-full text-center text-[10px] font-mono font-extrabold bg-slate-200/80 dark:bg-white/10 text-slate-700 dark:text-slate-200">
+                    <span
+                      className={`min-w-[20px] px-1.5 py-0.5 rounded-full text-center text-[10px] font-mono font-extrabold ${
+                        isActive
+                          ? "bg-white/25 text-white"
+                          : "bg-slate-200/90 dark:bg-white/15 text-slate-800 dark:text-slate-200"
+                      }`}
+                    >
                       {item.count}
                     </span>
                   )}
                   {isActive && (
-                    <ChevronRight className="w-3 h-3 text-blue-600 dark:text-cyan-400" />
+                    <ChevronRight className="w-3 h-3 text-white" />
                   )}
                 </div>
               )}
@@ -155,7 +197,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
       </nav>
 
       {/* ── FOOTER STATUS ───────────────────────────────────────────── */}
-      <div className="px-2 pb-3 pt-2 border-t border-slate-200/60 dark:border-white/8 space-y-2">
+      <div className="px-2 pb-3 pt-2 border-t border-slate-200/60 dark:border-white/10 space-y-2">
         {/* Health dot row */}
         <div className={`flex items-center gap-2 px-1 ${isCollapsed ? "justify-center" : ""}`}>
           <span
@@ -168,7 +210,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
             }`}
           />
           {!isCollapsed && (
-            <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 truncate flex-1">
+            <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 truncate flex-1">
               {backendHealthy === true
                 ? "Engine Connected"
                 : backendHealthy === false
@@ -177,7 +219,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
             </span>
           )}
           {!isCollapsed && (
-            <span className="text-[9px] font-mono text-slate-400 dark:text-slate-600 flex-shrink-0">
+            <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400 flex-shrink-0">
               :3000
             </span>
           )}
@@ -185,7 +227,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
 
         {/* Shield badge */}
         {!isCollapsed && (
-          <div className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-slate-100/80 dark:bg-white/6 border border-slate-200/60 dark:border-white/8 text-[10px] text-slate-600 dark:text-slate-400 font-semibold">
+          <div className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-slate-100/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 text-[10px] text-slate-800 dark:text-slate-100 font-bold shadow-sm">
             <ShieldCheck className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 flex-shrink-0" />
             <span className="truncate">578 Settings Links Active</span>
           </div>

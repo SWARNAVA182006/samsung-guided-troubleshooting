@@ -13,27 +13,28 @@ export const Logo: React.FC<LogoProps> = ({
   className = "",
 }) => {
   const sizeMap = {
-    sm: { img: "w-7 h-7", title: "text-xs", sub: "text-[9px]" },
-    md: { img: "w-9 h-9", title: "text-sm", sub: "text-[10px]" },
-    lg: { img: "w-12 h-12", title: "text-base", sub: "text-xs" },
-    xl: { img: "w-20 h-20", title: "text-xl", sub: "text-sm" },
+    sm: { box: "w-9 h-9", rounded: "rounded-xl", title: "text-xs", sub: "text-[9px]" },
+    md: { box: "w-10 h-10", rounded: "rounded-xl", title: "text-sm", sub: "text-[10px]" },
+    lg: { box: "w-12 h-12", rounded: "rounded-2xl", title: "text-base", sub: "text-xs" },
+    xl: { box: "w-20 h-20", rounded: "rounded-3xl", title: "text-xl", sub: "text-sm" },
   };
 
   const currentSize = sizeMap[size];
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* Official Samsung Guided Troubleshooting PNG Logo Mark */}
+      {/* Official Samsung Guided Troubleshooting App Icon Frame */}
       <div className="relative flex-shrink-0 transition-transform hover:scale-105">
-        <img
-          src={logoImg}
-          alt="Samsung Guided Troubleshooting Logo"
-          className={`${currentSize.img} object-contain rounded-xl drop-shadow-md`}
-          onError={(e) => {
-            // Fallback if image fails to load
-            (e.target as HTMLElement).style.display = "none";
-          }}
-        />
+        <div className={`${currentSize.box} ${currentSize.rounded} overflow-hidden shadow-sm border border-slate-200/90 dark:border-white/20 bg-[#092a72] flex items-center justify-center p-0.5`}>
+          <img
+            src={logoImg}
+            alt="Samsung Guided Troubleshooting Logo"
+            className={`w-full h-full object-cover ${currentSize.rounded}`}
+            onError={(e) => {
+              (e.target as HTMLElement).style.display = "none";
+            }}
+          />
+        </div>
       </div>
 
       {showText && (

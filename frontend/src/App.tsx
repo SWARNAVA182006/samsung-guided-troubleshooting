@@ -88,12 +88,8 @@ export const App: React.FC = () => {
     const root = document.documentElement;
     if (themeMode === "dark") {
       root.classList.add("dark");
-    } else if (themeMode === "light") {
-      root.classList.remove("dark");
     } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (prefersDark) root.classList.add("dark");
-      else root.classList.remove("dark");
+      root.classList.remove("dark");
     }
 
     if (reducedMotion) {
@@ -583,7 +579,7 @@ export const App: React.FC = () => {
               <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Choose your preferred visual theme</div>
             </div>
             <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100/80 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700">
-              {(["light", "dark", "system"] as ThemeMode[]).map((mode) => (
+              {(["light", "dark"] as ThemeMode[]).map((mode) => (
                 <button
                   key={mode}
                   onClick={() => setThemeMode(mode)}
@@ -671,7 +667,9 @@ export const App: React.FC = () => {
 
       <div
         className={`h-screen flex flex-col overflow-hidden font-sans transition-colors duration-300 ${
-          themeMode === "dark" ? "bg-app-dark text-white" : "bg-app-light text-slate-900"
+          themeMode === "dark"
+            ? "bg-app-dark text-white"
+            : "bg-app-light text-slate-900"
         }`}
       >
         <TopHeader

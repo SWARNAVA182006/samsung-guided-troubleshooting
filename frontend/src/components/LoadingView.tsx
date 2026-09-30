@@ -22,7 +22,7 @@ export const LoadingView: React.FC = () => {
 
   return (
     <div
-      className="bg-white dark:bg-[#1C2541] rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700/60 shadow-xl text-center space-y-6 animate-fade-in"
+      className="surface-card rounded-2xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 shadow-xl text-center space-y-6 animate-fade-in"
       role="status"
       aria-live="polite"
     >

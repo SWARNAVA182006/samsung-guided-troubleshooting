@@ -52,7 +52,7 @@ export interface TroubleshootRequest {
 
 export type NavigationTab = "home" | "troubleshoot" | "history" | "how-it-works" | "settings";
 
-export type ThemeMode = "dark" | "light" | "system";
+export type ThemeMode = "dark" | "light";
 
 export interface HistoryItem {
   id: string;

@@ -170,7 +170,7 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
     return (
       <div
         role="alert"
-        className="bg-white dark:bg-[#1C2541] rounded-2xl p-8 border border-slate-200 dark:border-slate-700/60 text-slate-500 dark:text-slate-400 text-center"
+        className="surface-card rounded-2xl p-8 border border-slate-200/80 dark:border-white/10 text-slate-600 dark:text-slate-300 text-center"
       >
         No diagnostic steps produced. Please try rephrasing your problem.
       </div>
@@ -275,8 +275,8 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   return (
     <div className="space-y-6 animate-fade-in select-none" role="region" aria-label="Troubleshooting results">
       {/* GOAL HEADER — clean, no technical scores */}
-      <div className="bg-white dark:bg-[#151F42] rounded-2xl sm:rounded-3xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-xl space-y-4">
-        <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-700/60 pb-4">
+      <div className="surface-card rounded-2xl sm:rounded-3xl p-6 border border-slate-200/80 dark:border-white/10 shadow-xl space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4">
           <div className="space-y-1.5 max-w-xl">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-blue-500/10 text-cyan-600 dark:text-cyan-400 border border-blue-500/20">
@@ -347,7 +347,7 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       {/* COMPLETION CARD */}
       {viewMode === "guided" && isFinished && (
         <div
-          className="bg-white dark:bg-[#151F42] rounded-2xl sm:rounded-3xl p-8 border border-slate-200 dark:border-slate-700/60 shadow-2xl text-center space-y-6 animate-fade-in max-w-lg mx-auto"
+          className="surface-card rounded-2xl sm:rounded-3xl p-8 border border-slate-200/80 dark:border-white/10 shadow-2xl text-center space-y-6 animate-fade-in max-w-lg mx-auto"
           role="status"
           aria-label="Troubleshooting complete"
         >
@@ -387,9 +387,9 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       {/* MODE 1: STEP-BY-STEP GUIDED INTERACTION                  */}
       {/* ======================================================== */}
       {viewMode === "guided" && !isFinished && totalSteps > 0 && currentStep && (
-        <div className="bg-white dark:bg-[#151F42] rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700/60 shadow-2xl space-y-6">
+        <div className="surface-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 shadow-2xl space-y-6">
           {/* Step Header */}
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700/60 pb-4">
+          <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-white/10 pb-4">
             <div className="space-y-0.5">
               <div className="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
                 Action {currentStep.actionIndex + 1} of {actions.length}: {currentStep.actionName}
@@ -543,7 +543,7 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
             <div
               key={actIdx}
               role="listitem"
-              className="bg-white dark:bg-[#151F42] rounded-2xl sm:rounded-3xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-xl space-y-4 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+              className="surface-card rounded-2xl sm:rounded-3xl p-6 border border-slate-200/80 dark:border-white/10 shadow-xl space-y-4 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">

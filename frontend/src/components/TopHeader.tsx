@@ -2,7 +2,6 @@ import React from "react";
 import {
   Sun,
   Moon,
-  Laptop,
   Menu,
   PlusCircle,
 } from "lucide-react";
@@ -48,7 +47,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 
   return (
     <header
-      className="sticky top-0 z-30 px-4 sm:px-6 py-3 glass-panel border-b border-slate-200/70 dark:border-white/8 flex items-center justify-between gap-4 select-none"
+      className="sticky top-0 z-30 px-4 sm:px-6 py-3 glass-panel border-b border-slate-200/70 dark:border-white/10 flex items-center justify-between gap-4 select-none"
       style={{ backdropFilter: "blur(32px) saturate(200%)" }}
     >
       {/* Top glass shimmer */}
@@ -96,9 +95,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           aria-label="Select theme mode"
         >
           {[
-            { mode: "dark" as ThemeMode, icon: Moon, label: "Dark Mode" },
             { mode: "light" as ThemeMode, icon: Sun, label: "Light Mode" },
-            { mode: "system" as ThemeMode, icon: Laptop, label: "System Mode" },
+            { mode: "dark" as ThemeMode, icon: Moon, label: "Dark Mode" },
           ].map(({ mode, icon: Icon, label }) => (
             <button
               key={mode}

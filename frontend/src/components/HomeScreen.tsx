@@ -74,7 +74,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     <div className="max-w-5xl mx-auto space-y-6 py-4 sm:py-6 animate-fade-in select-none">
 
       {/* ── HERO BANNER ─────────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 border border-white/8 p-6 sm:p-10 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 border border-white/10 p-6 sm:p-10 shadow-2xl">
         {/* Ambient orbs */}
         <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-cyan-500/12 blur-3xl pointer-events-none" />
         <div className="absolute left-1/3 bottom-0 w-56 h-56 rounded-full bg-blue-600/18 blur-2xl pointer-events-none" />
@@ -143,7 +143,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                     key={issue.presetId}
                     type="button"
                     onClick={() => onStartWithPreset(issue.presetId)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/8 hover:bg-cyan-500/18 border border-white/12 hover:border-cyan-400/35 text-xs font-semibold text-slate-300 hover:text-white transition-all btn-interactive"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-400/40 text-xs font-semibold text-slate-300 hover:text-white transition-all btn-interactive"
                   >
                     <Icon className="w-3 h-3 text-cyan-400" />
                     <span>{issue.label}</span>
